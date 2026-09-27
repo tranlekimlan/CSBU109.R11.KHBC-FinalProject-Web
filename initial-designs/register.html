@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký tài khoản - QFix QSVN</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .split-layout {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        /* NỬA TRÁI: Khu vực Form Đăng ký */
+        .register-panel {
+            width: 45%; /* Rộng hơn form login một chút vì có nhiều trường nhập liệu */
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.05);
+            overflow-y: auto; /* Cho phép cuộn nếu màn hình quá nhỏ */
+        }
+
+        /* Ẩn thanh cuộn (Scrollbar) cho đẹp nhưng vẫn cuộn được */
+        .register-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        .register-panel::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        /* CSS cho nút Quay lại */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+
+        .back-link:hover {
+            color: #0f766e;
+            transform: translateX(-4px); /* Hiệu ứng nhích nhẹ sang trái rất tinh tế */
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #0f766e;
+            text-decoration: none;
+            width: fit-content;
+            margin-bottom: 20px;
+        }
+
+        .logo-img {
+            height: 35px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo-text h1 {
+            font-size: 22px;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .logo-text p {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .form-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 420px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .form-container h2 {
+            font-size: 32px;
+            color: #1e293b;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .form-container p.subtitle {
+            color: #64748b;
+            font-size: 15px;
+            margin-bottom: 28px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        /* Class mới: Xếp 2 ô input nằm ngang cạnh nhau */
+        .input-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .input-row .input-group {
+            flex: 1;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 15px;
+            color: #1e293b;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #14b8a6;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: #0f766e;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: #115e59;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(15, 118, 110, 0.3);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 28px;
+            font-size: 15px;
+            color: #64748b;
+        }
+
+        .login-link a {
+            color: #0f766e;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* NỬA PHẢI: Hình ảnh (Chiếm 55%) */
+        .image-panel {
+            width: 55%;
+            background-image: url('Welcome.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        .image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.1) 100%);
+        }
+
+        @media (max-width: 900px) {
+            .split-layout {
+                flex-direction: column-reverse;
+                overflow-y: auto;
+            }
+            .register-panel {
+                width: 100%;
+                height: auto;
+                min-height: 80%;
+                padding: 30px;
+                border-top-left-radius: 20px;
+                border-top-right-radius: 20px;
+                margin-top: -20px;
+            }
+            .image-panel {
+                width: 100%;
+                min-height: 30vh;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="split-layout">
+        
+        <!-- Nửa Trái: Form Đăng ký -->
+        <div class="register-panel">
+
+            <a href="welcome.html" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i> Quay lại
+            </a>
+            
+            <!-- Logo (Bấm vào để quay về Welcome) -->
+            <a href="welcome.html" class="logo-container">
+                <img src="logo.png" alt="Logo QFix" class="logo-img" onerror="this.outerHTML='<i class=\'fa-solid fa-wrench logo-icon\' style=\'font-size: 28px; color: #14b8a6;\'></i>'">
+                <div class="logo-text">
+                    <h1>QFix</h1>
+                    <p>QSVN</p>
+                </div>
+            </a>
+
+            <!-- Nội dung Form -->
+            <div class="form-container">
+                <h2>Tạo tài khoản</h2>
+                <p class="subtitle">Điền thông tin của bạn để bắt đầu sử dụng QFix.</p>
+                
+                <form action="#" method="POST">
+                    
+                    <div class="input-group">
+                        <label for="fullname">Họ và tên</label>
+                        <input type="text" id="fullname" name="fullname" placeholder="VD: Nguyễn Văn A" required>
+                    </div>
+
+                    <!-- Sử dụng Flexbox để đưa 2 input lên cùng 1 hàng -->
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="student_id">Mã Sinh Viên</label>
+                            <input type="text" id="student_id" name="student_id" placeholder="VD: 20231234" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="room_number">Số phòng (KTX)</label>
+                            <input type="text" id="room_number" name="room_number" placeholder="VD: A202" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password">Mật khẩu</label>
+                        <input type="password" id="password" name="password" placeholder="Tạo mật khẩu (ít nhất 6 ký tự)" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="confirm_password">Xác nhận mật khẩu</label>
+                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Nhập lại mật khẩu" required>
+                    </div>
+
+                    <!-- Nút đăng ký (Giả lập chuyển về trang login) -->
+                    <button type="submit" class="btn-submit" onclick="window.location.href='login.html'; return false;">
+                        Đăng ký tài khoản
+                    </button>
+                </form>
+
+                <div class="login-link">
+                    Đã có tài khoản? <a href="login.html">Đăng nhập tại đây</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Nửa Phải: Ảnh nền -->
+        <div class="image-panel">
+            <div class="image-overlay"></div>
+        </div>
+
+    </div>
+
+</body>
+</html>
