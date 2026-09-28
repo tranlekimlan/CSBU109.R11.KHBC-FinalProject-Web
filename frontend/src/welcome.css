@@ -1,0 +1,181 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Container chính sử dụng Flexbox để chia đôi */
+        .split-layout {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        .logo-img {
+            height: 45px; /* Điều chỉnh con số này để logo to/nhỏ theo ý muốn */
+            width: auto;  /* Giữ nguyên tỷ lệ hình ảnh */
+            object-fit: contain;
+            border-radius: 8px; /* Thêm dòng này nếu muốn bo góc ảnh vuông */
+        }
+
+        /* BÊN TRÁI: Khu vực Nội dung (Chiếm 45%) */
+        .left-panel {
+            width: 45%;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.05); /* Đổ bóng nhẹ sang phải */
+        }
+
+        /* Header chứa Logo (Góc trái) và Auth buttons (Góc phải của panel) */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #0f766e;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+            color: #14b8a6;
+        }
+
+        .logo-text h1 {
+            font-size: 26px;
+            font-weight: 800;
+            line-height: 1;
+            color: #0f766e;
+        }
+
+        .logo-text p {
+            font-size: 13px;
+            color: #0d9488;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .auth-buttons button {
+            border: none;
+            background: none;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-login {
+            color: #475569;
+            margin-right: 15px;
+        }
+
+        .btn-login:hover {
+            color: #0f766e;
+        }
+
+        .btn-register {
+            color: #14b8a6;
+            border: 2px solid #14b8a6 !important;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .btn-register:hover {
+            background-color: #14b8a6;
+            color: #ffffff;
+        }
+
+        /* Nội dung chính căn giữa theo chiều dọc */
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 500px;
+        }
+
+        .content h2 {
+            font-size: 48px;
+            color: #1e293b;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 24px;
+        }
+
+        .content h2 span {
+            color: #14b8a6; /* Nhấn mạnh chữ bằng màu xanh */
+        }
+
+        .content p {
+            font-size: 18px;
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 40px;
+        }
+
+        /* Nút Đi đến trang chủ */
+        .btn-go-home {
+            background-color: #0f766e;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 18px 30px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            box-shadow: 0 10px 20px rgba(15, 118, 110, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-go-home:hover {
+            background-color: #115e59;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(15, 118, 110, 0.3);
+        }
+
+        .btn-go-home i {
+            margin-left: 12px;
+        }
+
+        /* BÊN PHẢI: Khu vực Hình ảnh (Chiếm 55%) */
+        .right-panel {
+            width: 55%;
+            background-image: url('images/Welcome.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        /* Responsive: Khi thu nhỏ màn hình (như iPad/Điện thoại) thì ảnh nhảy lên trên, chữ xuống dưới */
+        @media (max-width: 900px) {
+            .split-layout {
+                flex-direction: column-reverse;
+            }
+            .left-panel {
+                width: 100%;
+                height: 60%;
+                padding: 30px;
+            }
+            .right-panel {
+                width: 100%;
+                height: 40%;
+            }
+            .content h2 { font-size: 32px; }
+        }
