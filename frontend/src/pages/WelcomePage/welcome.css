@@ -156,7 +156,7 @@
         /* BÊN PHẢI: Khu vực Hình ảnh (Chiếm 55%) */
         .right-panel {
             width: 55%;
-            background-image: url('images/Welcome.jpg');
+            background-image: url('../../images/Welcome.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;

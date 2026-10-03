@@ -1,8 +1,10 @@
-import React from 'react';
-import './welcome.css'; // Chuyển phần <style> cũ thành 1 file css riêng và import vào đây
-import logoImg from './images/Logo.png';
+import { useNavigate } from 'react-router-dom';
+import './welcome.css';
+import logoImg from '../../images/Logo.png';
 
 function Welcome() {
+  const navigate = useNavigate();
+
   return (
     <div className="split-layout">
         {/*Nửa Trái: Giao diện UI trắng sáng*/}
@@ -18,8 +20,8 @@ function Welcome() {
                 </div>
                 
                 <div className="auth-buttons">
-                    <button className="btn-login">Đăng nhập</button>
-                    <button className="btn-register">Đăng ký</button>
+                    <button className="btn-login" onClick={() => navigate('/login')}>Đăng nhập</button>
+                    <button className="btn-register" onClick={() => navigate('/register')}>Đăng ký</button>
                 </div>
             </header>
 
@@ -27,8 +29,8 @@ function Welcome() {
                 <h2>Cổng Báo Cáo Sự Cố <span>Ký Túc Xá</span></h2>
                 <p>Nhanh chóng, minh bạch và hiệu quả. Nơi tiếp nhận mọi phản ánh về cơ sở vật chất của sinh viên Trung tâm GDQP&AN.</p>
                 
-                <button className="btn-go-home">
-                    Đi đến trang chủ 
+                <button className="btn-go-home" onClick={() => navigate('/login')}>
+                    Đi đến trang chủ
                     <i className="fa-solid fa-arrow-right"></i>
                 </button>
             </main>
