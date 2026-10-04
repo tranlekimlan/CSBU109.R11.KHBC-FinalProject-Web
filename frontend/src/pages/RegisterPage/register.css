@@ -85,10 +85,22 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+    
+            /* 1. Đổi center thành flex-start để chữ bắt đầu từ trên xuống, không bị đẩy ngược lên trần nhà */
+            justify-content: flex-start; 
+    
             max-width: 420px;
             width: 100%;
             margin: 0 auto;
+
+            /* 2. Ép tắt cái khung rác (để bạn không cần viết style inline dài dòng trong JSX nữa) */
+            border: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
+    
+            /* 3. Thêm một chút khoảng cách phía trên để form cách xa logo ra cho đẹp */
+            padding-top: 20px !important;
+            padding-bottom: 40px !important; 
         }
 
         .form-container h2 {

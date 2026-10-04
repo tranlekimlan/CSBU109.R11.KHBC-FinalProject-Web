@@ -48,7 +48,7 @@ function LoginPage() {
         </div>
 
         {/* Nội dung Form */}
-        <div className="form-container">
+        <div className="form-container" style={{ border: 'none', boxShadow: 'none', background: 'transparent', padding: 0 }}>
           <h2>Đăng nhập</h2>
           <p className="subtitle">Vui lòng nhập tài khoản để truy cập hệ thống.</p>
 
