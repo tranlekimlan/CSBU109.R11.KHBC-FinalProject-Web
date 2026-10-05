@@ -7,6 +7,8 @@ import CreateReport from './pages/CreateReport/CreateReport.jsx';
 import MyReports from './pages/MyReports/MyReports.jsx';
 import Notifications from './pages/Notifications/Notifications.jsx';
 import RoleSelection from './pages/RoleSelection/RoleSelection.jsx';
+import AdminDashboard from './pages/AdminDashboard/AdminDashboard.jsx';
+import WorkerDashboard from './pages/WorkerDashboard/WorkerDashboard.jsx';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <Route path="/my-reports" element={<MyReports />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/select-role" element={<RoleSelection />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/worker-dashboard" element={<WorkerDashboard />} />
       </Routes>
     </BrowserRouter>
   );
