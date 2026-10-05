@@ -65,7 +65,7 @@ export default function Sidebar({ role = 'student' }) {
       </nav>
 
       <div className="logout-area">
-        <a href="#" className="logout-btn" onClick={(e) => { e.preventDefault(); navigate('/select-role'); }}>
+        <a href="#" className="logout-btn" onClick={(e) => { e.preventDefault(); navigate('/'); }}>
           <i className="fa-solid fa-arrow-right-from-bracket" style={{ marginRight: '10px' }}></i> Đăng xuất
         </a>
       </div>

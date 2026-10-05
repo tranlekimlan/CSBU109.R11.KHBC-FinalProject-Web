@@ -7,10 +7,8 @@ function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // 1. Lấy role từ trang chọn vai trò gửi sang (mặc định là student nếu lỡ truy cập trực tiếp url /login)
   const userRole = location.state?.role || 'student';
 
-  // 2. TẠO BỘ TỪ ĐIỂN TEXT TỰ ĐỘNG THEO VAI TRÒ
   const roleConfig = {
     student: {
       title: "Đăng nhập Sinh viên",
@@ -34,12 +32,14 @@ function LoginPage() {
 
   const currentConfig = roleConfig[userRole];
 
-  // 3. Đổi 'studentId' thành 'username' cho dùng chung được mọi vai trò
   const [formData, setFormData] = useState({
     username: '',
     password: '',
     remember: false
   });
+
+  // 1. THÊM STATE ĐIỀU KHIỂN POPUP
+  const [popup, setPopup] = useState({ show: false, message: '' });
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -51,10 +51,8 @@ function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Gửi kèm role vào data để backend dễ phân loại sau này
     console.log('Đăng nhập:', { ...formData, role: userRole });
     
-    // ĐIỀU HƯỚNG DỰA TRÊN VAI TRÒ
     if (userRole === 'admin') {
       navigate('/admin-dashboard');
     } else if (userRole === 'worker') {
@@ -65,18 +63,43 @@ function LoginPage() {
   };
 
   const handleBack = () => {
-    navigate('/select-role'); // Đổi nút back về lại trang chọn vai trò
+    navigate('/select-role'); 
+  };
+
+  // 2. THÊM HÀM XỬ LÝ KHI BẤM QUÊN MẬT KHẨU
+  const handleForgotPassword = (e) => {
+    e.preventDefault(); // Chặn hành vi load lại trang của thẻ <a>
+    if (userRole === 'admin') {
+      setPopup({ show: true, message: 'Vui lòng truy cập thẳng vào cơ sở dữ liệu (MongoDB) để kiểm tra hoặc reset lại mật khẩu Quản trị viên!' });
+    } else {
+      setPopup({ show: true, message: 'Vui lòng liên hệ với Ban Quản lý KTX (Phòng Hành chính) và mang theo thẻ để được hỗ trợ cấp lại mật khẩu.' });
+    }
   };
 
   return (
     <div className="split-layout">
-      {/* Nửa Trái: Form Đăng nhập */}
+      
+      {/* 3. GIAO DIỆN POPUP BÁO LỖI */}
+      {popup.show && (
+        <div className="custom-popup-overlay">
+          <div className="custom-popup-box">
+            <div className="popup-icon">
+              <i className="fa-solid fa-circle-info"></i>
+            </div>
+            <h3>Hỗ trợ khôi phục</h3>
+            <p>{popup.message}</p>
+            <button onClick={() => setPopup({ show: false, message: '' })} className="btn-close-popup">
+              Đã hiểu
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="login-panel">
         <button onClick={handleBack} className="back-link">
           <i className="fa-solid fa-arrow-left"></i> Quay lại
         </button>
 
-        {/* Logo */}
         <div className="logo-container" onClick={() => navigate('/')}>
           <img src={logoImg} alt="Logo QFix" className="logo-img" />
           <div className="logo-text">
@@ -85,10 +108,8 @@ function LoginPage() {
           </div>
         </div>
 
-        {/* Nội dung Form */}
         <div className="form-container" style={{ border: 'none', boxShadow: 'none', background: 'transparent', padding: 0 }}>
           
-          {/* HIỂN THỊ TEXT ĐỘNG TỪ BỘ CẤU HÌNH */}
           <h2>{currentConfig.title}</h2>
           <p className="subtitle">{currentConfig.subtitle}</p>
 
@@ -98,7 +119,7 @@ function LoginPage() {
               <input
                 type="text"
                 id="username"
-                name="username" // Đã đổi name thành username
+                name="username" 
                 placeholder={currentConfig.inputPlaceholder}
                 value={formData.username}
                 onChange={handleInputChange}
@@ -129,7 +150,9 @@ function LoginPage() {
                 />
                 Ghi nhớ tài khoản
               </label>
-              <a href="#" className="forgot-password">Quên mật khẩu?</a>
+              
+              {/* 4. GẮN SỰ KIỆN CLICK VÀO CHỮ QUÊN MẬT KHẨU */}
+              <a href="#" className="forgot-password" onClick={handleForgotPassword}>Quên mật khẩu?</a>
             </div>
 
             <button type="submit" className="btn-submit">
@@ -137,7 +160,6 @@ function LoginPage() {
             </button>
           </form>
 
-          {/* ĐIỀU KIỆN ẨN HIỆN: Chỉ hiển thị nút đăng ký nếu là Sinh viên */}
           {userRole === 'student' && (
             <div className="register-link">
               Chưa có tài khoản? <a href="#" onClick={(e) => { e.preventDefault(); navigate('/register'); }}>Đăng ký ngay</a>
@@ -147,7 +169,6 @@ function LoginPage() {
         </div>
       </div>
 
-      {/* Nửa Phải: Ảnh nền */}
       <div className="image-panel">
         <div className="image-overlay"></div>
       </div>

@@ -242,6 +242,80 @@
     background: linear-gradient(to right, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.1) 100%);
 }
 
+/* ================= POPUP QUÊN MẬT KHẨU ================= */
+.custom-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.6); 
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000; 
+    animation: fadeIn 0.2s ease-out;
+}
+
+.custom-popup-box {
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    animation: slideUp 0.3s ease-out;
+}
+
+.popup-icon {
+    font-size: 40px;
+    color: #0f766e;
+    margin-bottom: 16px;
+}
+
+.custom-popup-box h3 {
+    font-size: 20px;
+    color: #1e293b;
+    margin-bottom: 12px;
+    font-weight: 800;
+}
+
+.custom-popup-box p {
+    font-size: 15px;
+    color: #475569;
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.btn-close-popup {
+    background-color: #0f766e;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-close-popup:hover {
+    background-color: #115e59;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
 /* HIỂN THỊ TRÊN ĐIỆN THOẠI */
 @media (max-width: 900px) {
     .split-layout {
