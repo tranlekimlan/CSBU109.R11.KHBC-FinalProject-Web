@@ -20,8 +20,8 @@ function Welcome() {
                 </div>
                 
                 <div className="auth-buttons">
-                    <button className="btn-login" onClick={() => navigate('/login')}>Đăng nhập</button>
-                    <button className="btn-register" onClick={() => navigate('/register')}>Đăng ký</button>
+                    <button className="btn-login" onClick={() => navigate('/select-role')}>Đăng nhập</button>
+                    <button className="btn-register" onClick={() => navigate('/select-role')}>Đăng ký</button>
                 </div>
             </header>
 
@@ -29,7 +29,7 @@ function Welcome() {
                 <h2>Cổng Báo Cáo Sự Cố <span>Ký Túc Xá</span></h2>
                 <p>Nhanh chóng, minh bạch và hiệu quả. Nơi tiếp nhận mọi phản ánh về cơ sở vật chất của sinh viên Trung tâm GDQP&AN.</p>
                 
-                <button className="btn-go-home" onClick={() => navigate('/login')}>
+                <button className="btn-go-home" onClick={() => navigate('/select-role')}>
                     Đi đến trang chủ
                     <i className="fa-solid fa-arrow-right"></i>
                 </button>

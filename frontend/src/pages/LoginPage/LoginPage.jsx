@@ -1,12 +1,42 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './login.css';
 import logoImg from '../../images/Logo.png';
 
 function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // 1. Lấy role từ trang chọn vai trò gửi sang (mặc định là student nếu lỡ truy cập trực tiếp url /login)
+  const userRole = location.state?.role || 'student';
+
+  // 2. TẠO BỘ TỪ ĐIỂN TEXT TỰ ĐỘNG THEO VAI TRÒ
+  const roleConfig = {
+    student: {
+      title: "Đăng nhập Sinh viên",
+      subtitle: "Dành cho sinh viên KTX báo cáo sự cố.",
+      inputLabel: "Mã Sinh Viên / Tên đăng nhập",
+      inputPlaceholder: "VD: 20231234"
+    },
+    worker: {
+      title: "Đăng nhập Thợ sửa chữa",
+      subtitle: "Dành cho nhân viên kỹ thuật tiếp nhận công việc.",
+      inputLabel: "Mã Nhân Viên",
+      inputPlaceholder: "VD: NV0123"
+    },
+    admin: {
+      title: "Đăng nhập Quản trị viên",
+      subtitle: "Hệ thống điều hành và quản lý QFix.",
+      inputLabel: "Email / Tên đăng nhập quản trị",
+      inputPlaceholder: "admin@qfix.edu.vn"
+    }
+  };
+
+  const currentConfig = roleConfig[userRole];
+
+  // 3. Đổi 'studentId' thành 'username' cho dùng chung được mọi vai trò
   const [formData, setFormData] = useState({
-    studentId: '',
+    username: '',
     password: '',
     remember: false
   });
@@ -21,13 +51,21 @@ function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Đăng nhập:', formData);
-    // TODO: Gọi API đăng nhập tại đây
-    // navigate('/dashboard');
+    // Gửi kèm role vào data để backend dễ phân loại sau này
+    console.log('Đăng nhập:', { ...formData, role: userRole });
+    
+    // ĐIỀU HƯỚNG DỰA TRÊN VAI TRÒ
+    if (userRole === 'admin') {
+      navigate('/admin-dashboard');
+    } else if (userRole === 'worker') {
+      navigate('/worker-dashboard');
+    } else {
+      navigate('/student-dashboard');
+    }
   };
 
   const handleBack = () => {
-    navigate('/');
+    navigate('/select-role'); // Đổi nút back về lại trang chọn vai trò
   };
 
   return (
@@ -49,18 +87,20 @@ function LoginPage() {
 
         {/* Nội dung Form */}
         <div className="form-container" style={{ border: 'none', boxShadow: 'none', background: 'transparent', padding: 0 }}>
-          <h2>Đăng nhập</h2>
-          <p className="subtitle">Vui lòng nhập tài khoản để truy cập hệ thống.</p>
+          
+          {/* HIỂN THỊ TEXT ĐỘNG TỪ BỘ CẤU HÌNH */}
+          <h2>{currentConfig.title}</h2>
+          <p className="subtitle">{currentConfig.subtitle}</p>
 
           <form onSubmit={handleSubmit}>
             <div className="input-group">
-              <label htmlFor="studentId">Mã Sinh Viên / Tên đăng nhập</label>
+              <label htmlFor="username">{currentConfig.inputLabel}</label>
               <input
                 type="text"
-                id="studentId"
-                name="studentId"
-                placeholder="VD: 20231234"
-                value={formData.studentId}
+                id="username"
+                name="username" // Đã đổi name thành username
+                placeholder={currentConfig.inputPlaceholder}
+                value={formData.username}
                 onChange={handleInputChange}
                 required
               />
@@ -97,9 +137,13 @@ function LoginPage() {
             </button>
           </form>
 
-          <div className="register-link">
-            Chưa có tài khoản? <a href="#" onClick={(e) => { e.preventDefault(); navigate('/register'); }}>Đăng ký ngay</a>
-          </div>
+          {/* ĐIỀU KIỆN ẨN HIỆN: Chỉ hiển thị nút đăng ký nếu là Sinh viên */}
+          {userRole === 'student' && (
+            <div className="register-link">
+              Chưa có tài khoản? <a href="#" onClick={(e) => { e.preventDefault(); navigate('/register'); }}>Đăng ký ngay</a>
+            </div>
+          )}
+          
         </div>
       </div>
 

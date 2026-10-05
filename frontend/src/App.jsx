@@ -6,6 +6,7 @@ import StudentDashboard from './pages/StudentDashboard/StudentDashboard.jsx';
 import CreateReport from './pages/CreateReport/CreateReport.jsx';
 import MyReports from './pages/MyReports/MyReports.jsx';
 import Notifications from './pages/Notifications/Notifications.jsx';
+import RoleSelection from './pages/RoleSelection/RoleSelection.jsx';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/create-report" element={<CreateReport />} />
         <Route path="/my-reports" element={<MyReports />} />
         <Route path="/notifications" element={<Notifications />} />
+        <Route path="/select-role" element={<RoleSelection />} />
       </Routes>
     </BrowserRouter>
   );
