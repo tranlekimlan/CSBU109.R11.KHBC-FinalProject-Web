@@ -1,231 +1,249 @@
 * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
 
-        .split-layout {
-            display: flex;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-        }
+.split-layout {
+    display: flex;
+    overflow: hidden;
 
-        /* NỬA TRÁI: Khu vực Form Đăng ký */
-        .register-panel {
-            width: 45%; /* Rộng hơn form login một chút vì có nhiều trường nhập liệu */
-            background-color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            padding: 40px 60px;
-            position: relative;
-            z-index: 2;
-            box-shadow: 10px 0 30px rgba(0,0,0,0.05);
-            overflow-y: auto; /* Cho phép cuộn nếu màn hình quá nhỏ */
-        }
+    /* Dùng lệnh FIXED để ghim chặt vào 4 góc trình duyệt, triệt tiêu mọi khoảng trắng */
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 9999;
+    background-color: #ffffff;
+}
 
-        /* Ẩn thanh cuộn (Scrollbar) cho đẹp nhưng vẫn cuộn được */
-        .register-panel::-webkit-scrollbar {
-            width: 6px;
-        }
-        .register-panel::-webkit-scrollbar-thumb {
-            background-color: #cbd5e1;
-            border-radius: 10px;
-        }
-
-        /* CSS cho nút Quay lại */
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #64748b;
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 24px;
-            transition: all 0.3s ease;
-            width: fit-content;
-        }
-
-        .back-link:hover {
-            color: #0f766e;
-            transform: translateX(-4px); /* Hiệu ứng nhích nhẹ sang trái rất tinh tế */
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #0f766e;
-            text-decoration: none;
-            width: fit-content;
-            margin-bottom: 20px;
-        }
-
-        .logo-img {
-            height: 35px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .logo-text h1 {
-            font-size: 22px;
-            font-weight: 800;
-            line-height: 1;
-        }
-
-        .logo-text p {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 2px;
-        }
-
-        .form-container {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
+/* NỬA TRÁI: Khu vực Form Đăng ký */
+.register-panel {
+    width: 45%; 
+    background-color: #ffffff;
     
-            /* 1. Đổi center thành flex-start để chữ bắt đầu từ trên xuống, không bị đẩy ngược lên trần nhà */
-            justify-content: flex-start; 
+    /* Chuyển sang block và bật thanh cuộn dọc (overflow-y) */
+    display: block; 
+    height: 100vh;
+    overflow-y: auto;
     
-            max-width: 420px;
-            width: 100%;
-            margin: 0 auto;
+    padding: 40px 60px;
+    position: relative;
+    z-index: 2;
+    box-shadow: 10px 0 30px rgba(0,0,0,0.05);
+}
 
-            /* 2. Ép tắt cái khung rác (để bạn không cần viết style inline dài dòng trong JSX nữa) */
-            border: none !important;
-            box-shadow: none !important;
-            background: transparent !important;
+/* Ẩn thanh cuộn (Scrollbar) cho đẹp nhưng vẫn cuộn được */
+.register-panel::-webkit-scrollbar {
+    width: 6px;
+}
+.register-panel::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 10px;
+}
+
+/* CSS cho nút Quay lại */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    transition: all 0.3s ease;
+    width: fit-content;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.back-link:hover {
+    color: #0f766e;
+    transform: translateX(-4px); 
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #0f766e;
+    text-decoration: none;
+    width: fit-content;
+    margin-bottom: 40px; 
+    cursor: pointer;
+}
+
+.logo-img {
+    height: 35px;
+    width: auto;
+    object-fit: contain;
+}
+
+.logo-text h1 {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.logo-text p {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.form-container {
+    /* Đổi sang block, bỏ lệnh ép căn giữa để form tự nhiên rớt xuống dưới */
+    display: block;
+    max-width: 420px;
+    width: 100%;
     
-            /* 3. Thêm một chút khoảng cách phía trên để form cách xa logo ra cho đẹp */
-            padding-top: 20px !important;
-            padding-bottom: 40px !important; 
-        }
+    /* Cách lề trên 20px, dưới 60px để có khoảng hở khi cuộn xuống tận đáy, không bị cắt chữ */
+    margin: 20px auto 60px auto; 
 
-        .form-container h2 {
-            font-size: 32px;
-            color: #1e293b;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
 
-        .form-container p.subtitle {
-            color: #64748b;
-            font-size: 15px;
-            margin-bottom: 28px;
-        }
+.form-container h2 {
+    font-size: 32px;
+    color: #1e293b;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
 
-        .input-group {
-            margin-bottom: 18px;
-        }
+.form-container p.subtitle {
+    color: #64748b;
+    font-size: 15px;
+    margin-bottom: 28px;
+}
 
-        /* Class mới: Xếp 2 ô input nằm ngang cạnh nhau */
-        .input-row {
-            display: flex;
-            gap: 16px;
-        }
+.input-group {
+    margin-bottom: 18px;
+}
 
-        .input-row .input-group {
-            flex: 1;
-        }
+/* Class mới: Xếp 2 ô input nằm ngang cạnh nhau */
+.input-row {
+    display: flex;
+    gap: 16px;
+}
 
-        .input-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: #334155;
-            margin-bottom: 8px;
-        }
+.input-row .input-group {
+    flex: 1;
+}
 
-        .input-group input {
-            width: 100%;
-            padding: 13px 16px;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            font-size: 15px;
-            color: #1e293b;
-            transition: all 0.3s ease;
-            background-color: #f8fafc;
-        }
+.input-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 8px;
+}
 
-        .input-group input:focus {
-            outline: none;
-            border-color: #14b8a6;
-            background-color: #ffffff;
-            box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1);
-        }
+.input-group input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 15px;
+    color: #1e293b;
+    transition: all 0.3s ease;
+    background-color: #f8fafc;
+}
 
-        .btn-submit {
-            width: 100%;
-            background-color: #0f766e;
-            color: white;
-            font-size: 16px;
-            font-weight: 700;
-            padding: 16px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
+.input-group input:focus {
+    outline: none;
+    border-color: #14b8a6;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1);
+}
 
-        .btn-submit:hover {
-            background-color: #115e59;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(15, 118, 110, 0.3);
-        }
+.btn-submit {
+    width: 100%;
+    background-color: #0f766e;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
 
-        .login-link {
-            text-align: center;
-            margin-top: 28px;
-            font-size: 15px;
-            color: #64748b;
-        }
+.btn-submit:hover {
+    background-color: #115e59;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(15, 118, 110, 0.3);
+}
 
-        .login-link a {
-            color: #0f766e;
-            font-weight: 700;
-            text-decoration: none;
-        }
+.login-link {
+    text-align: center;
+    margin-top: 28px;
+    font-size: 15px;
+    color: #64748b;
+}
 
-        .login-link a:hover {
-            text-decoration: underline;
-        }
+/* Hỗ trợ cả thẻ a và thẻ span (như trong react) */
+.login-link a, .login-link span {
+    color: #0f766e;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
 
-        /* NỬA PHẢI: Hình ảnh (Chiếm 55%) */
-        .image-panel {
-            width: 55%;
-            background-image: url('../../images/Welcome.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            position: relative;
-        }
+.login-link a:hover, .login-link span:hover {
+    text-decoration: underline;
+}
 
-        .image-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to right, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.1) 100%);
-        }
+/* NỬA PHẢI: Hình ảnh */
+.image-panel {
+    /* Đổi thành flex: 1 để tự động chiếm hết khoảng trống còn lại */
+    flex: 1; 
+    background-image: url('../../images/Welcome.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
 
-        @media (max-width: 900px) {
-            .split-layout {
-                flex-direction: column-reverse;
-                overflow-y: auto;
-            }
-            .register-panel {
-                width: 100%;
-                height: auto;
-                min-height: 80%;
-                padding: 30px;
-                border-top-left-radius: 20px;
-                border-top-right-radius: 20px;
-                margin-top: -20px;
-            }
-            .image-panel {
-                width: 100%;
-                min-height: 30vh;
-            }
-        }
+.image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.1) 100%);
+}
+
+/* HIỂN THỊ TRÊN ĐIỆN THOẠI */
+@media (max-width: 900px) {
+    .split-layout {
+        flex-direction: column-reverse;
+        overflow-y: auto;
+        position: static !important; /* Trả lại luồng tự nhiên trên mobile */
+        height: auto !important;
+    }
+    .register-panel {
+        width: 100%;
+        height: auto;
+        min-height: 80%;
+        overflow-y: visible;
+        padding: 30px;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        margin-top: -20px;
+    }
+    .image-panel {
+        width: 100%;
+        min-height: 35vh; /* Ảnh luôn hiển thị tối thiểu 35% trên điện thoại */
+        flex: none;
+    }
+}
