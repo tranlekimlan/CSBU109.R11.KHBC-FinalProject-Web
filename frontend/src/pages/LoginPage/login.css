@@ -65,7 +65,7 @@
 }
 
 .back-link:hover {
-    color: #0f766e;
+    color: #0a5c36;
     transform: translateX(-4px);
 }
 
@@ -73,7 +73,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #0f766e;
+    color: #0a5c36;
     text-decoration: none;
     width: fit-content;
     cursor: pointer;
@@ -147,7 +147,7 @@
 
 .input-group input:focus {
     outline: none;
-    border-color: #14b8a6;
+    border-color: #128a50;
     background-color: #ffffff;
     box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1);
 }
@@ -172,25 +172,25 @@
     cursor: pointer;
     width: 16px;
     height: 16px;
-    accent-color: #0f766e;
+    accent-color: #0a5c36;
 }
 
 .forgot-password {
     font-size: 14px;
-    color: #0f766e;
+    color: #0a5c36;
     font-weight: 600;
     text-decoration: none;
     transition: color 0.3s;
 }
 
 .forgot-password:hover {
-    color: #115e59;
+    color: #074528;
     text-decoration: underline;
 }
 
 .btn-submit {
     width: 100%;
-    background-color: #0f766e;
+    background-color: #0a5c36;
     color: white;
     font-size: 16px;
     font-weight: 700;
@@ -203,7 +203,7 @@
 }
 
 .btn-submit:hover {
-    background-color: #115e59;
+    background-color: #074528;
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(15, 118, 110, 0.3);
 }
@@ -216,7 +216,7 @@
 }
 
 .register-link a {
-    color: #0f766e;
+    color: #0a5c36;
     font-weight: 700;
     text-decoration: none;
 }
@@ -271,7 +271,7 @@
 
 .popup-icon {
     font-size: 40px;
-    color: #0f766e;
+    color: #0a5c36;
     margin-bottom: 16px;
 }
 
@@ -290,7 +290,7 @@
 }
 
 .btn-close-popup {
-    background-color: #0f766e;
+    background-color: #0a5c36;
     color: white;
     border: none;
     padding: 12px 30px;
@@ -303,7 +303,7 @@
 }
 
 .btn-close-popup:hover {
-    background-color: #115e59;
+    background-color: #074528;
 }
 
 @keyframes fadeIn {

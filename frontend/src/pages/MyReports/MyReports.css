@@ -126,12 +126,12 @@ body {
 }
 
 .filter-select:hover {
-  border-color: #0f766e;
+  border-color: #0a5c36;
 }
 
 .filter-select:focus {
   outline: none;
-  border-color: #0f766e;
+  border-color: #0a5c36;
   box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
 }
 
@@ -162,7 +162,7 @@ td {
 
 .ticket-id {
   font-weight: 700;
-  color: #0f766e;
+  color: #0a5c36;
 }
 
 .ticket-title {
@@ -205,7 +205,7 @@ td {
 }
 
 .action-btn:hover {
-  color: #0f766e;
+  color: #0a5c36;
 }
 
 /* Empty State */

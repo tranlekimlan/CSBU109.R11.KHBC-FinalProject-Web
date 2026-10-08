@@ -49,14 +49,14 @@
 }
 
 .role-card:hover {
-    border-color: #0f766e;
+    border-color: #0a5c36;
     background: #f0fdfa;
     transform: translateY(-5px);
 }
 
 .role-icon {
     font-size: 40px;
-    color: #0f766e;
+    color: #0a5c36;
     margin-bottom: 16px;
 }
 
@@ -78,5 +78,5 @@
 }
 
 .back-btn:hover {
-    color: #0f766e;
+    color: #0a5c36;
 }

@@ -33,7 +33,7 @@ body {
 
 /* Bảng lời chào & Nút tạo báo cáo */
 .welcome-banner {
-  background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+  background: linear-gradient(135deg, #0a5c36 0%, #128a50 100%);
   border-radius: 16px;
   padding: 32px 40px;
   color: white;
@@ -57,7 +57,7 @@ body {
 
 .btn-create-ticket {
   background-color: #ffffff;
-  color: #0f766e;
+  color: #0a5c36;
   padding: 16px 28px;
   border-radius: 12px;
   font-weight: 700;
@@ -155,7 +155,7 @@ body {
 }
 
 .view-all {
-  color: #0f766e;
+  color: #0a5c36;
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
@@ -225,7 +225,7 @@ td {
 }
 
 .action-btn:hover {
-  color: #0f766e;
+  color: #0a5c36;
 }
 
 @media (max-width: 768px) {

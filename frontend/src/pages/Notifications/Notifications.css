@@ -70,7 +70,7 @@ body {
 .btn-mark-all {
   padding: 8px 16px;
   background-color: #f1f5f9;
-  color: #0f766e;
+  color: #0a5c36;
   border: none;
   border-radius: 8px;
   font-size: 12px;
@@ -105,15 +105,15 @@ body {
 }
 
 .filter-btn:hover {
-  border-color: #0f766e;
-  color: #0f766e;
+  border-color: #0a5c36;
+  color: #0a5c36;
   background-color: #f0fdfa;
 }
 
 .filter-btn.active {
-  background-color: #0f766e;
+  background-color: #0a5c36;
   color: white;
-  border-color: #0f766e;
+  border-color: #0a5c36;
 }
 
 /* Notifications List */
@@ -170,7 +170,7 @@ body {
 
 .icon-teal {
   background-color: #f0fdfa;
-  color: #0f766e;
+  color: #0a5c36;
 }
 
 .notification-content {
