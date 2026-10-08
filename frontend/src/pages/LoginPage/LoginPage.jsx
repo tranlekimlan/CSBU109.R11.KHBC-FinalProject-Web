@@ -40,6 +40,7 @@ function LoginPage() {
 
   // 1. THÊM STATE ĐIỀU KHIỂN POPUP
   const [popup, setPopup] = useState({ show: false, message: '' });
+  const [errorMessage, setErrorMessage] = useState(''); // THÊM DÒNG NÀY
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -49,16 +50,48 @@ function LoginPage() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Đăng nhập:', { ...formData, role: userRole });
-    
-    if (userRole === 'admin') {
-      navigate('/admin-dashboard');
-    } else if (userRole === 'worker') {
-      navigate('/worker-dashboard');
-    } else {
-      navigate('/student-dashboard');
+    setErrorMessage(''); // Xóa lỗi cũ mỗi lần bấm đăng nhập
+
+    try {
+      // 1. Gửi data xuống Backend
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password,
+          role: userRole // Gửi kèm vai trò (student, worker, admin)
+        }),
+      });
+
+      // 2. Nhận kết quả từ Backend
+      const data = await response.json();
+
+      if (response.ok) {
+        // --- ĐĂNG NHẬP THÀNH CÔNG ---
+        // Lưu thông tin người dùng vào Local Storage để dùng cho các trang Dashboard
+        localStorage.setItem('currentUser', JSON.stringify(data.user));
+        
+        // Điều hướng đúng theo route của bạn
+        if (userRole === 'admin') {
+          navigate('/admin-dashboard');
+        } else if (userRole === 'worker') {
+          navigate('/worker-dashboard');
+        } else {
+          navigate('/student-dashboard');
+        }
+      } else {
+        // --- ĐĂNG NHẬP THẤT BẠI ---
+        // Hiển thị lỗi do Backend gửi lên (VD: "Mật khẩu không chính xác!")
+        setErrorMessage(data.message);
+      }
+    } catch (error) {
+      console.error('Lỗi mạng:', error);
+      setErrorMessage('Không thể kết nối đến máy chủ Backend!');
     }
   };
 
@@ -113,6 +146,13 @@ function LoginPage() {
           <h2>{currentConfig.title}</h2>
           <p className="subtitle">{currentConfig.subtitle}</p>
 
+          {errorMessage && (
+            <div style={{ color: '#dc2626', backgroundColor: '#fee2e2', padding: '10px', borderRadius: '6px', marginBottom: '15px', fontSize: '14px', textAlign: 'center' }}>
+              <i className="fa-solid fa-circle-exclamation" style={{ marginRight: '5px' }}></i>
+              {errorMessage}
+            </div>
+          )}
+          
           <form onSubmit={handleSubmit}>
             <div className="input-group">
               <label htmlFor="username">{currentConfig.inputLabel}</label>

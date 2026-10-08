@@ -13,6 +13,9 @@ function RegisterPage() {
     confirmPassword: ''
   });
 
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -21,15 +24,50 @@ function RegisterPage() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage('');
+    setSuccessMessage('');
+
+    // Kiểm tra mật khẩu khớp
     if (formData.password !== formData.confirmPassword) {
-      alert('Mật khẩu không khớp!');
+      setErrorMessage('Mật khẩu xác nhận không khớp!');
       return;
     }
-    console.log('Đăng ký:', formData);
-    // TODO: Gọi API đăng ký tại đây
-    // navigate('/login');
+
+    try {
+      // Gọi API Đăng ký
+      const response = await fetch('http://localhost:5000/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: formData.studentId, // Đưa Mã SV vào cột username
+          password: formData.password,
+          fullName: formData.fullName,
+          room: formData.roomNumber     // Đưa số phòng vào cột room
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Đăng ký thành công
+        setSuccessMessage('Đăng ký tài khoản thành công! Tự động chuyển đến trang Đăng nhập...');
+        
+        // Trì hoãn 2 giây để người dùng kịp đọc thông báo rồi mới chuyển trang
+        setTimeout(() => {
+          navigate('/login', { state: { role: 'student' } });
+        }, 2000);
+      } else {
+        // Báo lỗi từ Backend (VD: Trùng mã sinh viên)
+        setErrorMessage(data.message);
+      }
+    } catch (error) {
+      console.error('Lỗi mạng:', error);
+      setErrorMessage('Không thể kết nối đến máy chủ Backend!');
+    }
   };
 
   const handleBack = () => {
@@ -58,6 +96,20 @@ function RegisterPage() {
         <div className="form-container">
           <h2>Tạo tài khoản</h2>
           <p className="subtitle">Điền thông tin của bạn để bắt đầu sử dụng QFix.</p>
+
+          {/* KHỐI HIỂN THỊ THÔNG BÁO LỖI / THÀNH CÔNG */}
+          {errorMessage && (
+            <div style={{ color: '#dc2626', backgroundColor: '#fee2e2', padding: '10px', borderRadius: '6px', marginBottom: '15px', fontSize: '14px', textAlign: 'center' }}>
+              <i className="fa-solid fa-circle-exclamation" style={{ marginRight: '5px' }}></i>
+              {errorMessage}
+            </div>
+          )}
+          {successMessage && (
+            <div style={{ color: '#16a34a', backgroundColor: '#dcfce7', padding: '10px', borderRadius: '6px', marginBottom: '15px', fontSize: '14px', textAlign: 'center' }}>
+              <i className="fa-solid fa-circle-check" style={{ marginRight: '5px' }}></i>
+              {successMessage}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit}>
 
