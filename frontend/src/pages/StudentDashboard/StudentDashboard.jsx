@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import Header from '../../components/Header/Header';
 import './StudentDashboard.css';
+import pendingIcon from '../../images/pending.png';
+import progressIcon from '../../images/working.png';
+import resolvedIcon from '../../images/finished.png';
 
 export default function StudentDashboard() {
   const navigate = useNavigate();
@@ -45,9 +48,9 @@ export default function StudentDashboard() {
   const resolvedCount = reports.filter(r => r.status === 'resolved').length;
 
   const stats = [
-    { icon: 'fa-spinner', label: 'Đang chờ duyệt', value: pendingCount, color: 'blue' },
-    { icon: 'fa-person-digging', label: 'Thợ đang xử lý', value: progressCount, color: 'orange' },
-    { icon: 'fa-check-double', label: 'Đã sửa xong', value: resolvedCount, color: 'green' }
+    { imgSrc: pendingIcon, label: 'Đang chờ duyệt', value: pendingCount, color: 'blue' },
+    { imgSrc: progressIcon, label: 'Thợ đang xử lý', value: progressCount, color: 'orange' },
+    { imgSrc: resolvedIcon, label: 'Đã sửa xong', value: resolvedCount, color: 'green' }
   ];
 
   const statusBadge = {
@@ -92,7 +95,8 @@ export default function StudentDashboard() {
             {stats.map((stat, idx) => (
               <div key={idx} className="stat-card">
                 <div className={`stat-icon icon-${stat.color}`}>
-                  <i className={`fa-solid ${stat.icon}`}></i>
+                  {/* THAY THẺ <i> THÀNH THẺ <img> */}
+                  <img src={stat.imgSrc} alt={stat.label} className="custom-stat-img" />
                 </div>
                 <div className="stat-info">
                   <p>{stat.label}</p>

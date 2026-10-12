@@ -247,3 +247,11 @@ td {
     padding: 20px;
   }
 }
+
+/* CSS canh chỉnh cho icon tự chọn */
+.custom-stat-img {
+  width: 32px;  /* Chỉnh độ to nhỏ của hình ở đây */
+  height: 32px;
+  object-fit: contain; /* Giữ tỷ lệ hình không bị méo */
+  filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.1)); /* Thêm tí bóng cho hình nổi bật */
+}

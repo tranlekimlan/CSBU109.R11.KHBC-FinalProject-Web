@@ -87,9 +87,11 @@ export default function CreateReport() {
       if (response.ok) {
         setMessage({ type: 'success', text: 'Báo cáo sự cố của bạn đã được gửi thành công!' });
         setTimeout(() => {
-          navigate('/student-dashboard');
+          window.location.href = '/student-dashboard';
         }, 2000);
-      } else {
+      } 
+      
+      else {
         setMessage({ type: 'error', text: data.message || 'Có lỗi xảy ra khi gửi báo cáo.' });
       }
     } catch (error) {
