@@ -1,13 +1,18 @@
 const Ticket = require('../models/Ticket');
 
-// TẠO BÁO CÁO MỚI
 exports.createTicket = async (req, res) => {
   try {
-    const { title, category, description, studentId } = req.body;
-    const newTicket = new Ticket({ title, category, description, studentId });
+    const { title, room, category, description, studentId } = req.body;
+
+    const imageUrls = (req.files && Array.isArray(req.files)) ? req.files.map(file => `/uploads/${file.filename}`) : [];
+
+    const newTicket = new Ticket({ title, room, category, description, studentId, imageUrls });
     await newTicket.save();
+    
     res.status(201).json({ message: 'Tạo báo cáo thành công!', ticket: newTicket });
+    
   } catch (error) {
+    console.error("Lỗi khi tạo Ticket:", error.message);
     res.status(500).json({ message: 'Lỗi server', error: error.message });
   }
 };

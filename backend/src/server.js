@@ -21,6 +21,9 @@ app.get('/', (req, res) => {
   res.send('Backend is connected to QFix');
 });
 
+const path = require('path');
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server QFix đang chạy tại cổng http://localhost:${PORT}`);
