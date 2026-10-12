@@ -12,21 +12,21 @@ function LoginPage() {
   const roleConfig = {
     student: {
       title: "Đăng nhập Sinh viên",
-      subtitle: "Dành cho sinh viên KTX báo cáo sự cố.",
-      inputLabel: "Mã Sinh Viên / Tên đăng nhập",
-      inputPlaceholder: "VD: 20231234"
+      subtitle: "Dành cho sinh viên ở tại KTXQS báo cáo sự cố.",
+      inputLabel: "Mã Sinh Viên",
+      inputPlaceholder: ""
     },
     worker: {
       title: "Đăng nhập Thợ sửa chữa",
       subtitle: "Dành cho nhân viên kỹ thuật tiếp nhận công việc.",
       inputLabel: "Mã Nhân Viên",
-      inputPlaceholder: "VD: NV0123"
+      inputPlaceholder: ""
     },
     admin: {
       title: "Đăng nhập Quản trị viên",
       subtitle: "Hệ thống điều hành và quản lý QFix.",
-      inputLabel: "Email / Tên đăng nhập quản trị",
-      inputPlaceholder: "admin@qfix.edu.vn"
+      inputLabel: "Email",
+      inputPlaceholder: ""
     }
   };
 
@@ -173,7 +173,7 @@ function LoginPage() {
                 type="password"
                 id="password"
                 name="password"
-                placeholder="••••••••"
+                placeholder=""
                 value={formData.password}
                 onChange={handleInputChange}
                 required
