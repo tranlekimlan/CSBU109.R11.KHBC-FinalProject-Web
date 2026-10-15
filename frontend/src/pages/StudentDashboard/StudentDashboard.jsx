@@ -13,6 +13,8 @@ export default function StudentDashboard() {
   const [currentUser, setCurrentUser] = useState(null);
   const [reports, setReports] = useState([]); // State lưu danh sách báo cáo thật
   const [isLoading, setIsLoading] = useState(true); // Trạng thái loading
+  const [selectedReport, setSelectedReport] = useState(null);
+  const [enlargedImage, setEnlargedImage] = useState(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('currentUser');
@@ -142,8 +144,8 @@ export default function StudentDashboard() {
                         </span>
                       </td>
                       <td>
-                        <button className="action-btn" onClick={() => navigate(`/report/${report._id}`)}>
-                          <i className="fa-solid fa-eye"></i>
+                        <button className="btn-view-detail" onClick={() => setSelectedReport(report)}>
+                          Xem
                         </button>
                       </td>
                     </tr>
@@ -158,6 +160,90 @@ export default function StudentDashboard() {
           </div>
         </div>
       </main>
+
+      {selectedReport && (
+        <div className="sd-modal-overlay" onClick={() => setSelectedReport(null)}>
+          {/* Ngăn không cho click xuyên qua form để đóng popup */}
+          <div className="sd-modal-box" onClick={(e) => e.stopPropagation()}> 
+            
+            <div className="sd-modal-header">
+              <h2>Chi Tiết Sự Cố</h2>
+              <p>Mã lỗi: QF-{selectedReport._id.substring(selectedReport._id.length - 4).toUpperCase()}</p>
+            </div>
+
+            <div className="sd-modal-body">
+              <div className="sd-row">
+                <div className="sd-group">
+                  <label>Tiêu đề sự cố</label>
+                  <input type="text" value={selectedReport.title} readOnly />
+                </div>
+                <div className="sd-group">
+                  <label>Số phòng</label>
+                  <input type="text" value={selectedReport.room} readOnly />
+                </div>
+              </div>
+
+              <div className="sd-row">
+                <div className="sd-group">
+                  <label>Danh mục</label>
+                  <input type="text" value={selectedReport.category} readOnly />
+                </div>
+                <div className="sd-group">
+                  <label>Ngày báo cáo</label>
+                  <input type="text" value={formatDate(selectedReport.createdAt)} readOnly />
+                </div>
+              </div>
+              
+              {/* Chỉ hiển thị khu vực ảnh nếu báo cáo có đính kèm ảnh */}
+              {selectedReport.imageUrls && selectedReport.imageUrls.length > 0 && (
+                <div className="sd-group">
+                  <label>Hình ảnh đính kèm</label>
+
+                  <div className="sd-image-grid">
+
+                    {selectedReport.imageUrls.map((img, index) => (
+                      <div 
+                        key={index} 
+                        className="sd-image-preview"
+                        onClick={() => setEnlargedImage(img)}
+                        title="Nhấn để phóng to ảnh"
+                      >
+                        <img src={img} alt={`report-img-${index}`} />
+                      </div>
+                    ))}
+                    
+                  </div>
+                </div>
+              )}
+
+              <div className="sd-group">
+                <label>Mô tả chi tiết</label>
+                <textarea value={selectedReport.description} readOnly></textarea>
+              </div>
+
+              <div className="sd-actions">
+                <button className="sd-btn-close" onClick={() => setSelectedReport(null)}>
+                  Đóng Pop-up
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      )}
+
+      {enlargedImage && (
+        <div className="sd-image-zoom-overlay" onClick={() => setEnlargedImage(null)}>
+          <span className="sd-zoom-close">✕</span>
+          <img 
+            src={enlargedImage} 
+            alt="Phóng to" 
+            className="sd-zoom-content" 
+            onClick={(e) => e.stopPropagation()} /* Chặn tắt khi bấm vào trong ảnh */
+          />
+        </div>
+      )}
+
     </div>
   );
 }

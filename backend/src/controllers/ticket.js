@@ -4,7 +4,9 @@ exports.createTicket = async (req, res) => {
   try {
     const { title, room, category, description, studentId } = req.body;
 
-    const imageUrls = (req.files && Array.isArray(req.files)) ? req.files.map(file => `/uploads/${file.filename}`) : [];
+    const imageUrls = (req.files && Array.isArray(req.files)) 
+                        ? req.files.map(file => file.path) 
+                        : [];
 
     const newTicket = new Ticket({ title, room, category, description, studentId, imageUrls });
     await newTicket.save();

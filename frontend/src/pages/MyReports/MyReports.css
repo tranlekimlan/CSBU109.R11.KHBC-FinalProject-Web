@@ -264,3 +264,243 @@ td {
   object-fit: contain; 
   filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.1)); 
 }
+
+/* Nút Xem chi tiết - Màu xanh quân sự */
+.btn-view-detail {
+  background-color: #0a5c36; /* Mã màu xanh quân sự (Army Green) */
+  color: #ffffff; /* Chữ màu trắng */
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-view-detail:hover {
+  background-color: #06331e; /* Màu xanh quân sự đậm hơn khi đưa chuột vào */
+  transform: translateY(-1px); /* Hơi nổi lên nhẹ */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-view-detail:active {
+  transform: translateY(1px); /* Lún xuống khi click */
+}
+
+/* ========================================= */
+/* CSS CHO MODAL POP-UP CHI TIẾT SỰ CỐ       */
+/* ========================================= */
+
+.sd-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.65); /* Nền mờ tối */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+/* Khung form viền dày (Kế thừa từ .cr-form-box) */
+.sd-modal-box {
+  width: 100%;
+  max-width: 850px;
+  max-height: 90vh; /* Không để dài quá màn hình */
+  background-color: #ffffff;
+  border: 10px solid #0a5c36;
+  border-radius: 24px;
+  overflow-y: auto; /* Cho phép cuộn nếu nội dung dài */
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Header của Pop-up (Kế thừa từ .cr-header) */
+.sd-modal-header {
+  background-color: #0a5c36;
+  color: #ffffff;
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.sd-modal-header h2 {
+  font-size: 26px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.sd-modal-header p {
+  color: #e2e8f0;
+  font-size: 15px;
+  margin: 0;
+}
+
+/* Khu vực nội dung */
+.sd-modal-body {
+  padding: 40px;
+}
+
+.sd-row {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 24px;
+}
+
+.sd-group {
+  flex: 1;
+  margin-bottom: 24px;
+}
+
+.sd-row .sd-group {
+  margin-bottom: 0;
+}
+
+.sd-group label {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 10px;
+}
+
+/* Ô nhập liệu chế độ Đọc (Read-only) */
+.sd-group input[type="text"],
+.sd-group textarea {
+  width: 100%;
+  padding: 14px 20px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #334155;
+  background-color: #f1f5f9; /* Nền xám nhạt báo hiệu không sửa được */
+  outline: none;
+  cursor: default;
+}
+
+.sd-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Khu vực hiển thị ảnh (Kế thừa .cr-image-preview) */
+.sd-image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.sd-image-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  cursor: zoom-in;
+}
+
+.sd-image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Nút Đóng */
+.sd-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.sd-btn-close {
+  padding: 14px 40px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  background-color: #e2e8f0;
+  color: #475569;
+  transition: all 0.2s ease;
+}
+
+.sd-btn-close:hover {
+  background-color: #cbd5e1;
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 768px) {
+  .sd-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  .sd-row .sd-group {
+    margin-bottom: 24px;
+  }
+  .sd-modal-body {
+    padding: 24px;
+  }
+}
+
+.sd-image-zoom-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  cursor: zoom-out;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.sd-zoom-content {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 12px;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.8);
+  cursor: default;
+  object-fit: contain;
+  animation: zoomInBounce 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes zoomInBounce {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.sd-zoom-close {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  color: #ffffff;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.sd-zoom-close:hover {
+  color: #ef4444;
+}
