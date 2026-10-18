@@ -15,15 +15,21 @@
   padding: 0 24px;
   border-bottom: 1px solid #f1f5f9;
   text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.logo-area:hover {
+  background-color: #f8fafc;
 }
 
 /* Đổi Logo Icon động theo class cha */
 .sidebar-student .logo-icon { font-size: 24px; color: #128a50; margin-right: 12px; }
-.sidebar-admin .logo-icon { font-size: 24px; color: #1e293b; margin-right: 12px; }
+.sidebar-admin .logo-icon { font-size: 24px; color: #0a5c36; margin-right: 12px; }
 .sidebar-worker .logo-icon { font-size: 24px; color: #d97706; margin-right: 12px; }
 
 .sidebar-student .logo-text h1 { font-size: 20px; color: #0a5c36; font-weight: 800; }
-.sidebar-admin .logo-text h1 { font-size: 20px; color: #1e293b; font-weight: 800; }
+.sidebar-admin .logo-text h1 { font-size: 20px; color: #0a5c36; font-weight: 800; }
 .sidebar-worker .logo-text h1 { font-size: 20px; color: #b45309; font-weight: 800; }
 
 .logo-text p {
@@ -49,6 +55,7 @@
   font-weight: 600;
   font-size: 15px;
   transition: all 0.3s ease;
+  border-left: 4px solid transparent;
 }
 
 .menu-item i {
@@ -58,20 +65,21 @@
 }
 
 /* Hiệu ứng hover cho từng Role */
-.sidebar-student .menu-item:hover { background-color: #f1f5f9; color: #0a5c36; }
-.sidebar-admin .menu-item:hover { background-color: #f1f5f9; color: #1e293b; }
+.sidebar-student .menu-item:hover { background-color: #f0fdfa; color: #0a5c36; }
+.sidebar-admin .menu-item:hover { background-color: #f0fdfa; color: #0a5c36; }
 .sidebar-worker .menu-item:hover { background-color: #fffbeb; color: #d97706; }
 
 /* Active Class sinh động cho từng Role */
 .active-student {
   background-color: #f0fdfa;
   color: #0a5c36 !important;
+  border-left: 4px solid #0a5c36;
 }
 
 .active-admin {
-  background-color: #f1f5f9;
-  color: #1e293b !important;
-  border-left: 4px solid #1e293b;
+  background-color: #f0fdfa;
+  color: #0a5c36 !important;
+  border-left: 4px solid #0a5c36;
 }
 
 .active-worker {

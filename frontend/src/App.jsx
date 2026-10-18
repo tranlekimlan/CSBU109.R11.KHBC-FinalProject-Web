@@ -9,6 +9,9 @@ import Notifications from './pages/Notifications/Notifications.jsx';
 import RoleSelection from './pages/RoleSelection/RoleSelection.jsx';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard.jsx';
 import WorkerDashboard from './pages/WorkerDashboard/WorkerDashboard.jsx';
+import AllTickets from './pages/AdminPages/AllTickets.jsx';
+import ManageWorkers from './pages/AdminPages/ManageWorkers.jsx';
+import AdminReports from './pages/AdminPages/AdminReports.jsx';
 
 function App() {
   return (
@@ -23,6 +26,9 @@ function App() {
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/select-role" element={<RoleSelection />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/all-tickets" element={<AllTickets />} />
+        <Route path="/manage-workers" element={<ManageWorkers />} />
+        <Route path="/admin/reports" element={<AdminReports />} />
         <Route path="/worker-dashboard" element={<WorkerDashboard />} />
       </Routes>
     </BrowserRouter>
