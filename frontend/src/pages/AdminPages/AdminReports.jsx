@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import Header from '../../components/Header/Header';
 import './AdminPages.css';
+import ExcelJS from 'exceljs';
+import { saveAs } from 'file-saver';
 
 export default function AdminReports() {
   const navigate = useNavigate();
@@ -70,41 +72,66 @@ export default function AdminReports() {
     resolved: stats.resolved
   };
 
-  const exportReport = () => {
-    const headers = ['Mã Vé', 'Sinh viên', 'Phòng', 'Danh mục', 'Trạng thái', 'Ngày báo'];
-    const rows = filteredTickets.map(t => [
-      `QF-${t._id.substring(t._id.length - 4).toUpperCase()}`,
-      t.studentName || 'N/A',
-      t.room,
-      t.category,
-      ['pending', 'progress', 'resolved'].includes(t.status)
-        ? { pending: 'Chờ duyệt', progress: 'Đang xử lý', resolved: 'Đã xong' }[t.status]
-        : 'Không rõ',
-      new Date(t.createdAt).toLocaleDateString('vi-VN')
-    ]);
+  const exportReport = async () => {
+    // 1. Khởi tạo một Workbook mới
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Báo Cáo Sự Cố');
 
-    const summarySection = [
-      [''],
-      ['THỐNG KÊ TÓMLƯỢC'],
-      ['Tổng số sự cố', stats.total],
-      ['Chờ duyệt', stats.pending],
-      ['Đang xử lý', stats.progress],
-      ['Đã xong', stats.resolved],
-      ['Tỷ lệ hoàn thành', `${resolveRate}%`]
-    ];
+    // 2. Thêm dòng tiêu đề cột
+    worksheet.addRow(['Mã Vé', 'Sinh viên', 'Phòng', 'Danh mục', 'Trạng thái', 'Ngày báo']);
 
-    const csv = [
-      headers.join(','),
-      ...rows.map(row => row.map(cell => `"${cell}"`).join(',')),
-      ...summarySection.map(row => row.join(','))
-    ].join('\n');
+    // Định dạng in đậm cho dòng tiêu đề
+    worksheet.getRow(1).font = { bold: true };
+    worksheet.getRow(1).alignment = { vertical: 'middle', horizontal: 'center' };
 
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    link.setAttribute('href', url);
-    link.setAttribute('download', `bao_cao_${new Date().getTime()}.csv`);
-    link.click();
+    // 3. Chuẩn bị dữ liệu và thêm vào các dòng tiếp theo
+    filteredTickets.forEach(t => {
+      worksheet.addRow([
+        `QF-${t._id.substring(t._id.length - 4).toUpperCase()}`,
+        t.studentName || 'N/A',
+        t.room,
+        t.category,
+        ['pending', 'progress', 'resolved'].includes(t.status)
+          ? { pending: 'Chờ duyệt', progress: 'Đang xử lý', resolved: 'Đã xong' }[t.status]
+          : 'Không rõ',
+        new Date(t.createdAt).toLocaleDateString('vi-VN')
+      ]);
+    });
+
+    // 4. Thuật toán tự động tính toán và điều chỉnh độ rộng cho từng cột (AutoFit)
+    worksheet.columns.forEach((column) => {
+      let maxColumnLength = 0;
+      // Duyệt qua từng ô trong cột để tìm nội dung dài nhất
+      column.eachCell({ includeEmpty: true }, (cell) => {
+        const cellValue = cell.value ? cell.value.toString() : '';
+        maxColumnLength = Math.max(maxColumnLength, cellValue.length);
+      });
+      // Đặt độ rộng bằng độ dài lớn nhất tìm được cộng thêm một khoảng đệm nhỏ (ví dụ: 5)
+      column.width = maxColumnLength < 10 ? 10 : maxColumnLength + 5;
+    });
+
+    // 5. Thêm phần thống kê tóm lược (cách ra 2 dòng cho đẹp)
+    worksheet.addRow([]);
+    worksheet.addRow([]);
+    
+    const summaryHeaderRow = worksheet.addRow(['THỐNG KÊ TÓM LƯỢC']);
+    summaryHeaderRow.font = { bold: true };
+    
+    worksheet.addRow(['Tổng số sự cố', stats.total]);
+    worksheet.addRow(['Chờ duyệt', stats.pending]);
+    worksheet.addRow(['Đang xử lý', stats.progress]);
+    worksheet.addRow(['Đã xong', stats.resolved]);
+    worksheet.addRow(['Tỷ lệ hoàn thành', `${resolveRate}%`]);
+
+    // 6. Xuất và tải file Excel về máy
+    try {
+      const buffer = await workbook.xlsx.writeBuffer();
+      const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      saveAs(blob, `Bao_Cao_QFix_${new Date().getTime()}.xlsx`);
+    } catch (error) {
+      console.error('Lỗi khi tạo file Excel:', error);
+      alert('Đã xảy ra lỗi khi xuất file Excel. Vui lòng thử lại sau.');
+    }
   };
 
   return (
