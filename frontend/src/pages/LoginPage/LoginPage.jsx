@@ -13,20 +13,20 @@ function LoginPage() {
     student: {
       title: "Đăng nhập Sinh viên",
       subtitle: "Dành cho sinh viên ở tại KTXQS báo cáo sự cố.",
-      inputLabel: "Mã Sinh Viên",
+      inputLabel: "Mã Số Sinh Viên",
       inputPlaceholder: ""
     },
     worker: {
       title: "Đăng nhập Thợ sửa chữa",
       subtitle: "Dành cho nhân viên kỹ thuật tiếp nhận công việc.",
-      inputLabel: "Mã Nhân Viên",
-      inputPlaceholder: ""
+      inputLabel: "Mã Số Nhân Viên",
+      inputPlaceholder: "NV001"
     },
     admin: {
       title: "Đăng nhập Quản trị viên",
       subtitle: "Hệ thống điều hành và quản lý QFix.",
       inputLabel: "Email",
-      inputPlaceholder: ""
+      inputPlaceholder: "admin@gmail.com"
     }
   };
 

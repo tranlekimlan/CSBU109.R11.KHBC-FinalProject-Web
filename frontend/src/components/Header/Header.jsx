@@ -31,7 +31,7 @@ export default function Header({ title = 'Bảng điều khiển' }) {
           {/* Hiển thị Số phòng và Mã sinh viên (chính là trường username) */}
           <div className="user-room">
             {currentUser 
-              ? `Phòng: ${currentUser.room || 'N/A'} | SV: ${currentUser.username}` 
+              ? `Phòng: ${currentUser.room || 'N/A'} | MS: ${currentUser.username}` 
               : 'Đang tải...'}
           </div>
         </div>

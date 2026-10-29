@@ -14,7 +14,9 @@ export default function Sidebar({ role = 'student' }) {
         { path: '/student-dashboard', label: 'Tổng quan', icon: 'fa-house' },
         { path: '/create-report', label: 'Báo sự cố mới', icon: 'fa-plus-circle' },
         { path: '/my-reports', label: 'Báo cáo của tôi', icon: 'fa-clipboard-list' },
-        { path: '/notifications', label: 'Thông báo', icon: 'fa-bell' }
+        {path: '/complain', label: 'Khiếu nại'},
+        { path: '/notifications', label: 'Thông báo', icon: 'fa-bell' },
+        { path: '/profile', label: 'Thông tin cá nhân'}
       ]
     },
     admin: {
@@ -22,6 +24,7 @@ export default function Sidebar({ role = 'student' }) {
       items: [
         { path: '/admin-dashboard', label: 'Tổng quan Quản trị', icon: 'fa-chart-pie' },
         { path: '/admin/all-tickets', label: 'Quản lý sự cố', icon: 'fa-list-check' },
+        { path: '/admin/all-complain', label: 'Quản lý khiếu nại'},
         { path: '/manage-workers', label: 'Quản lý nhân sự', icon: 'fa-users-gear' },
         { path: '/admin/reports', label: 'Thống kê & Báo cáo', icon: 'fa-file-contract' }
       ]
@@ -31,7 +34,10 @@ export default function Sidebar({ role = 'student' }) {
       items: [
         { path: '/worker-dashboard', label: 'Tổng quan', icon: 'fa-house' },
         { path: '/worker/tasks', label: 'Việc được giao', icon: 'fa-toolbox' },
-        { path: '/worker/history', label: 'Lịch sử sửa chữa', icon: 'fa-clock-rotate-left' }
+        { path: '/worker/history', label: 'Lịch sử sửa chữa', icon: 'fa-clock-rotate-left' },
+        { path: '/worker/complain', label: 'Khiếu nại'},
+        { path: '/worker/notification', label: 'Thông báo'},
+        { path: '/worker/profile', label: 'Thông tin cá nhân'}
       ]
     }
   };
