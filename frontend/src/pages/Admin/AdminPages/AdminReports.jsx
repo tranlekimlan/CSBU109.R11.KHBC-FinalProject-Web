@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../../components/Sidebar/Sidebar';
-import Header from '../../components/Header/Header';
+import Sidebar from '../../../components/Sidebar/Sidebar';
+import Header from '../../../components/Header/Header';
 import './AdminPages.css';
-import ExcelJS from 'exceljs';
-import { saveAs } from 'file-saver';
 
 export default function AdminReports() {
   const navigate = useNavigate();

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../../components/Sidebar/Sidebar';
-import Header from '../../components/Header/Header';
+import Sidebar from '../../../components/Sidebar/Sidebar';
+import Header from '../../../components/Header/Header';
 import './MyReports.css';
 
 // IMPORT HÌNH ẢNH TỪ THƯ MỤC ASSETS
-import totalIcon from '../../images/task.png';
-import pendingIcon from '../../images/pending.png';
-import progressIcon from '../../images/working.png';
-import resolvedIcon from '../../images/finished.png';
+import totalIcon from '../../../images/task.png';
+import pendingIcon from '../../../images/pending.png';
+import progressIcon from '../../../images/working.png';
+import resolvedIcon from '../../../images/finished.png';
 
 export default function MyReports() {
   const navigate = useNavigate();

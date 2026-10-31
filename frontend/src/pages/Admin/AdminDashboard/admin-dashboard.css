@@ -31,9 +31,9 @@ body {
   width: 100%;
 }
 
-/* 1. Đổi Banner Admin sang tông màu xanh quân sự (giống Student) */
+/* 1. Đổi Banner Admin sang tông màu cyan-teal Messenger */
 .welcome-banner.admin-banner {
-  background: linear-gradient(135deg, #0a5c36 0%, #128a50 100%);
+  background: linear-gradient(135deg, #0891B2 0%, #00D4FF 100%);
   border-radius: 16px;
   padding: 32px 40px;
   color: white;
@@ -41,7 +41,7 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
-  box-shadow: 0 10px 25px rgba(20, 184, 166, 0.2);
+  box-shadow: 0 10px 25px rgba(8, 145, 178, 0.25);
 }
 
 .welcome-text h2 {
@@ -79,7 +79,7 @@ body {
 
 .btn-create-ticket {
   background-color: #ffffff;
-  color: #0a5c36;
+  color: #0891B2;
   padding: 16px 28px;
   border-radius: 12px;
   font-weight: 700;
@@ -124,7 +124,7 @@ body {
 
 /* Bổ sung màu sắc cho thẻ Admin */
 .icon-blue { background: #eff6ff; color: #3b82f6; }
-.icon-orange { background: #fff7ed; color: #f97316; }
+.icon-orange { background: #fff7ed; color: #61dae2; }
 .icon-green { background: #f0fdf4; color: #22c55e; }
 .icon-red { background: #fef2f2; color: #ef4444; }
 .icon-purple { background: #f5f3ff; color: #8b5cf6; }
@@ -164,7 +164,7 @@ body {
 }
 
 .view-all {
-  color: #0a5c36;
+  color: #0891B2;
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
@@ -266,26 +266,29 @@ td {
 }
 
 .filter-btn {
-  padding: 10px 16px;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  background: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  background: #f0f9ff;
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
-  color: #64748b;
+  color: #0891B2;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(8, 145, 178, 0.1);
 }
 
 .filter-btn:hover {
-  border-color: #0a5c36;
-  color: #0a5c36;
+  background: #e0f7ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(8, 145, 178, 0.2);
 }
 
 .filter-btn.active {
-  background: #0a5c36;
+  background: linear-gradient(135deg, #0891B2 0%, #00D4FF 100%);
   color: white;
-  border-color: #0a5c36;
+  box-shadow: 0 4px 16px rgba(8, 145, 178, 0.3);
+  transform: translateY(-2px);
 }
 
 /* Modal Styles */
@@ -309,7 +312,7 @@ td {
   max-width: 850px;
   max-height: 90vh;
   background-color: #ffffff;
-  border: 10px solid #0a5c36;
+  border: 10px solid #0891B2;
   border-radius: 24px;
   overflow-y: auto;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
@@ -327,14 +330,14 @@ td {
 }
 
 .sd-modal-header {
-  background-color: #0a5c36;
+  background-color: #0891B2;
   color: #ffffff;
   text-align: center;
   padding: 30px 20px;
 }
 
 .sd-modal-header.admin-header {
-  background-color: #0a5c36;
+  background-color: #0891B2;
 }
 
 .sd-modal-header h2 {
@@ -419,7 +422,7 @@ td {
 
 .btn-update-status {
   padding: 14px 24px;
-  background-color: #0a5c36;
+  background-color: #0891B2;
   color: white;
   border: none;
   border-radius: 8px;
@@ -432,7 +435,7 @@ td {
 }
 
 .btn-update-status:hover {
-  background-color: #06331e;
+  background-color: #065F7C;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
@@ -539,7 +542,7 @@ td {
 
 /* View detail button */
 .btn-view-detail {
-  background-color: #0a5c36;
+  background-color: #0891B2;
   color: #ffffff;
   border: none;
   border-radius: 6px;
@@ -552,7 +555,7 @@ td {
 }
 
 .btn-view-detail:hover {
-  background-color: #06331e;
+  background-color: #065F7C;
   transform: translateY(-1px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }

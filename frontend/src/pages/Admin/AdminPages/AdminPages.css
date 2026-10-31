@@ -72,12 +72,12 @@
 }
 
 .filter-select:hover {
-  border-color: #0a5c36;
+  border-color: #0891B2;
 }
 
 .btn-export {
   padding: 10px 16px;
-  background: #0a5c36;
+  background: #0891B2;
   color: white;
   border: none;
   border-radius: 8px;
@@ -123,7 +123,7 @@
   display: block;
   font-size: 28px;
   font-weight: 800;
-  color: #0a5c36;
+  color: #0891B2;
 }
 
 /* Table Section */
@@ -178,7 +178,7 @@
 
 .ticket-id {
   font-weight: 700;
-  color: #0a5c36;
+  color: #0891B2;
 }
 
 .ticket-title {
@@ -223,7 +223,7 @@
 }
 
 .btn-view-detail {
-  background: #0a5c36;
+  background: #0891B2;
   color: white;
   border: none;
   padding: 6px 14px;
@@ -271,7 +271,7 @@
   max-width: 850px;
   max-height: 90vh;
   background: white;
-  border: 10px solid #0a5c36;
+  border: 10px solid #0891B2;
   border-radius: 24px;
   overflow-y: auto;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
@@ -284,7 +284,7 @@
 }
 
 .modal-header {
-  background: #0a5c36;
+  background: #0891B2;
   color: white;
   padding: 30px 20px;
   text-align: center;
@@ -390,7 +390,7 @@
 
 .btn-update {
   padding: 12px 20px;
-  background: #0a5c36;
+  background: #0891B2;
   color: white;
   border: none;
   border-radius: 8px;
@@ -498,7 +498,7 @@
 }
 
 .btn-primary {
-  background: #0a5c36;
+  background: #0891B2;
   color: white;
   border: none;
   padding: 12px 24px;

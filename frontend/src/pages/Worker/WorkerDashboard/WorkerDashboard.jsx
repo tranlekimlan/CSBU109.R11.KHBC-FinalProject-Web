@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../../components/Sidebar/Sidebar';
-import Header from '../../components/Header/Header';
+import Sidebar from '../../../components/Sidebar/Sidebar';
+import Header from '../../../components/Header/Header';
 import './WorkerDashboard.css';
-import assignedIcon from '../../images/task.png';
-import workingIcon from '../../images/working.png';
-import resolvedIcon from '../../images/finished.png';
+import assignedIcon from '../../../images/task.png';
+import workingIcon from '../../../images/working.png';
+import resolvedIcon from '../../../images/finished.png';
 
 export default function WorkerDashboard() {
   const navigate = useNavigate();

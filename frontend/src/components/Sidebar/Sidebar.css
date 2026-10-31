@@ -25,11 +25,11 @@
 
 /* Đổi Logo Icon động theo class cha */
 .sidebar-student .logo-icon { font-size: 24px; color: #128a50; margin-right: 12px; }
-.sidebar-admin .logo-icon { font-size: 24px; color: #0a5c36; margin-right: 12px; }
+.sidebar-admin .logo-icon { font-size: 24px; color: #0891B2; margin-right: 12px; }
 .sidebar-worker .logo-icon { font-size: 24px; color: #d97706; margin-right: 12px; }
 
 .sidebar-student .logo-text h1 { font-size: 20px; color: #0a5c36; font-weight: 800; }
-.sidebar-admin .logo-text h1 { font-size: 20px; color: #0a5c36; font-weight: 800; }
+.sidebar-admin .logo-text h1 { font-size: 20px; color: #0891B2; font-weight: 800; }
 .sidebar-worker .logo-text h1 { font-size: 20px; color: #b45309; font-weight: 800; }
 
 .logo-text p {
@@ -66,7 +66,7 @@
 
 /* Hiệu ứng hover cho từng Role */
 .sidebar-student .menu-item:hover { background-color: #f0fdfa; color: #0a5c36; }
-.sidebar-admin .menu-item:hover { background-color: #f0fdfa; color: #0a5c36; }
+.sidebar-admin .menu-item:hover { background-color: #e0f7ff; color: #0891B2; }
 .sidebar-worker .menu-item:hover { background-color: #fffbeb; color: #d97706; }
 
 /* Active Class sinh động cho từng Role */
@@ -77,9 +77,9 @@
 }
 
 .active-admin {
-  background-color: #f0fdfa;
-  color: #0a5c36 !important;
-  border-left: 4px solid #0a5c36;
+  background-color: #e0f7ff;
+  color: #0891B2 !important;
+  border-left: 4px solid #0891B2;
 }
 
 .active-worker {

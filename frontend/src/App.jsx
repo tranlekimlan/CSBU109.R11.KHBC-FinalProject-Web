@@ -1,17 +1,20 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Welcome from './pages/WelcomePage/welcome.jsx';
-import LoginPage from './pages/LoginPage/LoginPage.jsx';
-import RegisterPage from './pages/RegisterPage/RegisterPage.jsx';
-import StudentDashboard from './pages/StudentDashboard/StudentDashboard.jsx';
-import CreateReport from './pages/CreateReport/CreateReport.jsx';
-import MyReports from './pages/MyReports/MyReports.jsx';
-import Notifications from './pages/Notifications/Notifications.jsx';
-import RoleSelection from './pages/RoleSelection/RoleSelection.jsx';
-import AdminDashboard from './pages/AdminDashboard/AdminDashboard.jsx';
-import WorkerDashboard from './pages/WorkerDashboard/WorkerDashboard.jsx';
-import AllTickets from './pages/AdminPages/AllTickets.jsx';
-import ManageWorkers from './pages/AdminPages/ManageWorkers.jsx';
-import AdminReports from './pages/AdminPages/AdminReports.jsx';
+import Welcome from './pages/Auth/WelcomePage/welcome.jsx';
+import LoginPage from './pages/Auth/LoginPage/LoginPage.jsx';
+import RegisterPage from './pages/Auth/RegisterPage/RegisterPage.jsx';
+import StudentDashboard from './pages/Student/StudentDashboard/StudentDashboard.jsx';
+import CreateReport from './pages/Student/CreateReport/CreateReport.jsx';
+import MyReports from './pages/Student/MyReports/MyReports.jsx';
+import Notifications from './pages/Student/Notifications/Notifications.jsx';
+import RoleSelection from './pages/Auth/RoleSelection/RoleSelection.jsx';
+import AdminDashboard from './pages/Admin/AdminDashboard/AdminDashboard.jsx';
+import WorkerDashboard from './pages/Worker/WorkerDashboard/WorkerDashboard.jsx';
+import AllTickets from './pages/Admin/AdminPages/AllTickets.jsx';
+import ManageWorkers from './pages/Admin/AdminPages/ManageWorkers.jsx';
+import AdminReports from './pages/Admin/AdminPages/AdminReports.jsx';
+import ComplaintManagement from './pages/Admin/AdminPages/ComplaintManagement.jsx';
+import StudentComplaints from './pages/Student/StudentPages/StudentComplaints.jsx';
+import StudentProfile from './pages/Student/StudentPages/StudentProfile.jsx';
 
 function App() {
   return (
@@ -23,12 +26,15 @@ function App() {
         <Route path="/student-dashboard" element={<StudentDashboard />} />
         <Route path="/create-report" element={<CreateReport />} />
         <Route path="/my-reports" element={<MyReports />} />
+        <Route path="/complain" element={<StudentComplaints />} />
+        <Route path="/profile" element={<StudentProfile />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/select-role" element={<RoleSelection />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/admin/all-tickets" element={<AllTickets />} />
         <Route path="/manage-workers" element={<ManageWorkers />} />
         <Route path="/admin/reports" element={<AdminReports />} />
+        <Route path="/admin/complaints" element={<ComplaintManagement />} />
         <Route path="/worker-dashboard" element={<WorkerDashboard />} />
       </Routes>
     </BrowserRouter>

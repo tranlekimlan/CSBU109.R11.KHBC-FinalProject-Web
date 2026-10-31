@@ -24,7 +24,7 @@ export default function Sidebar({ role = 'student' }) {
       items: [
         { path: '/admin-dashboard', label: 'Tổng quan Quản trị', icon: 'fa-chart-pie' },
         { path: '/admin/all-tickets', label: 'Quản lý sự cố', icon: 'fa-list-check' },
-        { path: '/admin/all-complain', label: 'Quản lý khiếu nại'},
+        { path: '/admin/complaints', label: 'Quản lý khiếu nại', icon: 'fa-message' },
         { path: '/manage-workers', label: 'Quản lý nhân sự', icon: 'fa-users-gear' },
         { path: '/admin/reports', label: 'Thống kê & Báo cáo', icon: 'fa-file-contract' }
       ]

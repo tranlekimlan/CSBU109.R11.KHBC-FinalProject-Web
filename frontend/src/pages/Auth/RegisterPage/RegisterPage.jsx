@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './register.css';
-import logoImg from '../../images/Logo.png';
+import logoImg from '../../../images/Logo.png';
 
 function RegisterPage() {
   const navigate = useNavigate();

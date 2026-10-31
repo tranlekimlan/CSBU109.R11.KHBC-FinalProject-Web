@@ -1,13 +1,17 @@
 /* RESET RIÊNG CHO FORM NÀY */
 .cr-page-wrapper {
-  padding: 40px;
+  padding: 40px 20px;
   width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
   display: block;
 }
 
 /* KHUNG FORM VIỀN DÀY */
 .cr-form-box {
   width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
   background-color: #ffffff;
   border: 10px solid #0a5c36;
   border-radius: 24px;
