@@ -5,9 +5,10 @@ const ticketSchema = new mongoose.Schema({
   room: { type: String, required: true},
   category: { type: String, required: true },
   description: { type: String, required: true },
-  status: { type: String, enum: ['pending', 'progress', 'resolved'], default: 'pending' },
-  studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // ID của người gửi
-  workerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },    // ID của thợ sẽ sửa
+  // THÊM 'assigned' vào danh sách enum
+  status: { type: String, enum: ['pending', 'assigned', 'progress', 'resolved', 'archived'], default: 'pending' },
+  studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, 
+  workerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },   
   imageUrls: [{ type: String}]
 }, { timestamps: true });
 

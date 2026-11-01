@@ -97,6 +97,32 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleArchiveTicket = async () => {
+    if (!window.confirm('Xác nhận nghiệm thu? Vé này sẽ được lưu trữ lịch sử và gỡ khỏi bảng điều khiển của Admin.')) {
+      return;
+    }
+
+    try {
+      // Gọi API cập nhật trạng thái thành 'archived'
+      const response = await fetch(`http://localhost:5000/api/tickets/${selectedTicket._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'archived' })
+      });
+
+      if (response.ok) {
+        // Rút vé khỏi mảng tickets hiện tại để nó biến mất khỏi màn hình Admin
+        setTickets(tickets.filter(t => t._id !== selectedTicket._id));
+        setSelectedTicket(null); // Đóng popup
+        alert('Đã nghiệm thu và lưu trữ vé thành công!');
+      } else {
+        alert('Có lỗi xảy ra khi lưu trữ vé.');
+      }
+    } catch (error) {
+      console.error('Lỗi khi lưu trữ vé:', error);
+    }
+  };
+
   return (
     <div className="app-container">
       <Sidebar role='admin'/>
@@ -300,6 +326,17 @@ export default function AdminDashboard() {
               </div>
 
               <div className="sd-actions">
+                {/* Nút Nghiệm thu & Lưu trữ chỉ hiện khi thợ đã báo cáo 'Đã xong' */}
+                {selectedTicket.status === 'resolved' && (
+                  <button 
+                    className="btn-update-status" 
+                    style={{ backgroundColor: '#0f766e', marginRight: '12px' }}
+                    onClick={handleArchiveTicket}
+                  >
+                    <i className="fa-solid fa-box-archive"></i> Nghiệm thu & Lưu trữ
+                  </button>
+                )}
+
                 <button className="sd-btn-close" onClick={() => setSelectedTicket(null)}>
                   Đóng
                 </button>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import Header from '../../../components/Header/Header';
@@ -10,41 +10,51 @@ import resolvedIcon from '../../../images/finished.png';
 export default function WorkerDashboard() {
   const navigate = useNavigate();
 
-  // State quản lý UI giống hệt Admin
+  const [currentUser, setCurrentUser] = useState(null);
+  const [tasks, setTasks] = useState([]); // Chuyển thành mảng rỗng ban đầu
   const [filterStatus, setFilterStatus] = useState('all');
   const [selectedTask, setSelectedTask] = useState(null);
   const [newStatus, setNewStatus] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Dữ liệu mẫu (Tạm thời dùng State tĩnh, sau này sẽ thay bằng fetch API)
-  const [tasks, setTasks] = useState([
-    {
-      _id: '1245',
-      room: 'B301',
-      title: 'Thay vòi nước bồn rửa mặt',
-      category: 'Nước / Vệ sinh',
-      time: '08:30 - Hôm nay',
-      status: 'assigned',
-      description: 'Sinh viên báo vòi nước rỉ sét, vặn không chặt, rò rỉ nước liên tục.'
-    },
-    {
-      _id: '1240',
-      room: 'C105',
-      title: 'Sửa quạt trần lắc mạnh',
-      category: 'Điện / Ánh sáng',
-      time: '10:00 - Hôm nay',
-      status: 'progress',
-      description: 'Quạt quay phát ra tiếng kêu cọt kẹt lớn, rung lắc mạnh khi bật số 3.'
-    },
-    {
-      _id: '1238',
-      room: 'A102',
-      title: 'Thay bản lề tủ quần áo',
-      category: 'Mộc / Nội thất',
-      time: '14:00 - Hôm qua',
-      status: 'resolved',
-      description: 'Cửa tủ xệ hoàn toàn, rớt 2 ốc bản lề dưới.'
+  // 1. KIỂM TRA ĐĂNG NHẬP VÀ TẢI DỮ LIỆU
+  useEffect(() => {
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      if (user.role !== 'worker') {
+        navigate('/login');
+        return;
+      }
+      setCurrentUser(user);
+      
+      // Lấy ID người dùng, thử cả _id (của MongoDB) và id (nếu Backend trả về bị đổi tên)
+      const workerId = user._id || user.id; 
+      
+      if (workerId) {
+         fetchTasks(workerId); // Chỉ gọi API khi ID đã tồn tại
+      } else {
+         console.error("Lỗi chí mạng: Không tìm thấy ID của người thợ trong localStorage!", user);
+      }
+    } else {
+      navigate('/login');
     }
-  ]);
+  }, [navigate]);
+
+  // 2. GỌI API LẤY DANH SÁCH CÔNG VIỆC
+  const fetchTasks = async (workerId) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/tickets/worker/${workerId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setTasks(data);
+      }
+    } catch (error) {
+      console.error('Lỗi khi tải danh sách việc:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Logic đếm số lượng
   const totalCount = tasks.length;
@@ -68,14 +78,35 @@ export default function WorkerDashboard() {
     ? tasks
     : tasks.filter(t => t.status === filterStatus);
 
-  // Hàm mô phỏng cập nhật (sau này sẽ gọi API PUT)
-  const handleUpdateStatus = () => {
+  // 3. GỌI API CẬP NHẬT TRẠNG THÁI VÉ
+  const handleUpdateStatus = async () => {
     if (!selectedTask || !newStatus) return;
-    setTasks(tasks.map(t =>
-      t._id === selectedTask._id ? { ...t, status: newStatus } : t
-    ));
-    setSelectedTask(null);
-    setNewStatus('');
+    
+    try {
+      const response = await fetch(`http://localhost:5000/api/tickets/${selectedTask._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+
+      if (response.ok) {
+        // Cập nhật lại giao diện ngay lập tức mà không cần load lại trang
+        setTasks(tasks.map(t =>
+          t._id === selectedTask._id ? { ...t, status: newStatus } : t
+        ));
+        setSelectedTask(null);
+        setNewStatus('');
+      }
+    } catch (error) {
+      console.error('Lỗi cập nhật trạng thái:', error);
+      alert('Không thể lưu trạng thái lúc này!');
+    }
+  };
+
+  // Hàm fomat ngày cho đẹp
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    return new Date(dateString).toLocaleDateString('vi-VN');
   };
 
   return (
@@ -89,10 +120,11 @@ export default function WorkerDashboard() {
           {/* Banner */}
           <div className="welcome-banner worker-banner">
             <div className="welcome-text">
-              <h2>Xin chào, Kỹ thuật viên Nguyễn Văn Điện! 👷‍♂️</h2>
+              {/* Tên Thợ được lấy động từ Database */}
+              <h2>Xin chào, Kỹ thuật viên {currentUser?.fullName}! 👷‍♂️</h2>
               <p>Bạn đang có {assignedCount + progressCount} công việc cần xử lý. Chúc một ngày làm việc hiệu quả.</p>
             </div>
-            <button className="btn-scan-qr" onClick={() => alert('Mở camera quét mã QR phòng...')}>
+            <button className="btn-scan-qr" onClick={() => alert('Chức năng quét mã QR phòng sẽ ra mắt sau!')}>
               <i className="fa-solid fa-qrcode"></i> Quét QR Nhận Việc
             </button>
           </div>
@@ -106,37 +138,25 @@ export default function WorkerDashboard() {
                 </div>
                 <div className="stat-info">
                   <p>{stat.label}</p>
-                  <h3>{stat.value}</h3>
+                  <h3>{isLoading ? '...' : stat.value}</h3>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Bộ lọc giống Admin */}
+          {/* Bộ lọc */}
           <div className="filter-section">
             <div className="filter-buttons">
-              <button
-                className={`filter-btn ${filterStatus === 'all' ? 'active' : ''}`}
-                onClick={() => setFilterStatus('all')}
-              >
+              <button className={`filter-btn ${filterStatus === 'all' ? 'active' : ''}`} onClick={() => setFilterStatus('all')}>
                 Tất cả ({totalCount})
               </button>
-              <button
-                className={`filter-btn ${filterStatus === 'assigned' ? 'active' : ''}`}
-                onClick={() => setFilterStatus('assigned')}
-              >
+              <button className={`filter-btn ${filterStatus === 'assigned' ? 'active' : ''}`} onClick={() => setFilterStatus('assigned')}>
                 Chưa bắt đầu ({assignedCount})
               </button>
-              <button
-                className={`filter-btn ${filterStatus === 'progress' ? 'active' : ''}`}
-                onClick={() => setFilterStatus('progress')}
-              >
+              <button className={`filter-btn ${filterStatus === 'progress' ? 'active' : ''}`} onClick={() => setFilterStatus('progress')}>
                 Đang sửa ({progressCount})
               </button>
-              <button
-                className={`filter-btn ${filterStatus === 'resolved' ? 'active' : ''}`}
-                onClick={() => setFilterStatus('resolved')}
-              >
+              <button className={`filter-btn ${filterStatus === 'resolved' ? 'active' : ''}`} onClick={() => setFilterStatus('resolved')}>
                 Đã xong ({resolvedCount})
               </button>
             </div>
@@ -147,51 +167,58 @@ export default function WorkerDashboard() {
             <div className="table-header">
               <h3>Danh sách việc cần làm</h3>
             </div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Mã Lỗi</th>
-                  <th>Phòng</th>
-                  <th>Công việc</th>
-                  <th>Danh mục</th>
-                  <th>Thời gian giao</th>
-                  <th>Trạng thái</th>
-                  <th>Thao tác</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredTasks.map((task) => (
-                  <tr key={task._id}>
-                    <td><strong>QF-{task._id}</strong></td>
-                    <td><span className="room-tag-worker">{task.room}</span></td>
-                    <td className="ticket-title">{task.title}</td>
-                    <td>{task.category}</td>
-                    <td>{task.time}</td>
-                    <td>
-                      <span className={`badge ${statusBadge[task.status].class}`}>
-                        {statusBadge[task.status].label}
-                      </span>
-                    </td>
-                    <td>
-                      <button className="btn-view-detail" onClick={() => { setSelectedTask(task); setNewStatus(''); }}>
-                        Cập nhật
-                      </button>
-                    </td>
+            {filteredTasks.length > 0 ? (
+              <table>
+                <thead>
+                  <tr>
+                    <th>Mã Lỗi</th>
+                    <th>Phòng</th>
+                    <th>Công việc</th>
+                    <th>Danh mục</th>
+                    <th>Ngày giao</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {filteredTasks.map((task) => (
+                    <tr key={task._id}>
+                      {/* Cắt ngắn ID cho đẹp mắt */}
+                      <td><strong>QF-{task._id.substring(task._id.length - 4).toUpperCase()}</strong></td>
+                      <td><span className="room-tag-worker">{task.room}</span></td>
+                      <td className="ticket-title">{task.title}</td>
+                      <td>{task.category}</td>
+                      <td>{formatDate(task.createdAt)}</td>
+                      <td>
+                        <span className={`badge ${statusBadge[task.status]?.class || 'badge-assigned'}`}>
+                          {statusBadge[task.status]?.label || 'Không rõ'}
+                        </span>
+                      </td>
+                      <td>
+                        <button className="btn-view-detail" onClick={() => { setSelectedTask(task); setNewStatus(''); }}>
+                          Cập nhật
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div style={{ padding: '40px', textAlign: 'center', color: '#64748b' }}>
+                {isLoading ? 'Đang tải dữ liệu...' : 'Hoan hô! Bạn không còn công việc nào đang tồn đọng.'}
+              </div>
+            )}
           </div>
         </div>
       </main>
 
-      {/* Modal Popup cập nhật trạng thái (Sao chép hoàn hảo từ Admin) */}
+      {/* Modal Popup cập nhật trạng thái */}
       {selectedTask && (
         <div className="sd-modal-overlay" onClick={() => setSelectedTask(null)}>
           <div className="sd-modal-box" onClick={(e) => e.stopPropagation()}>
             <div className="sd-modal-header worker-header">
               <h2>Cập Nhật Tiến Độ</h2>
-              <p>Mã lỗi: QF-{selectedTask._id}</p>
+              <p>Mã lỗi: QF-{selectedTask._id.substring(selectedTask._id.length - 4).toUpperCase()}</p>
             </div>
 
             <div className="sd-modal-body">
@@ -213,7 +240,7 @@ export default function WorkerDashboard() {
 
               <div className="sd-group">
                 <label>Mô tả chi tiết từ sinh viên</label>
-                <textarea value={selectedTask.description} readOnly></textarea>
+                <textarea value={selectedTask.description || 'Không có mô tả thêm'} readOnly></textarea>
               </div>
 
               <div className="sd-group">
