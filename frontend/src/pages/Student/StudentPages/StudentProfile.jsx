@@ -29,21 +29,6 @@ export default function StudentProfile() {
     }));
   };
 
-  const handleAvatarChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const newData = { ...currentUser, avatar: reader.result };
-        localStorage.setItem('currentUser', JSON.stringify(newData));
-        setCurrentUser(newData);
-        setFormData(newData);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-
   const handleSave = async () => {
     try {
       const response = await fetch(`http://localhost:5000/api/users/${currentUser.id}`, {
@@ -69,6 +54,14 @@ export default function StudentProfile() {
     return <div>Đang tải...</div>;
   }
 
+  // ==========================================
+  // THUẬT TOÁN TẠO AVATAR CHỮ GIỐNG HỆT HEADER
+  // ==========================================
+  const avatarName = currentUser ? encodeURIComponent(currentUser.fullName) : 'User';
+  // Dùng đúng màu nền (e2e8f0) và màu chữ (334155) của Header. Có thêm size=150 để ảnh to rõ nét.
+  const defaultAvatarUrl = `https://ui-avatars.com/api/?name=${avatarName}&background=e2e8f0&color=334155&size=150`;
+  const avatarUrl = currentUser?.avatar || defaultAvatarUrl;
+
   return (
     <div className="app-container">
       <Sidebar />
@@ -76,36 +69,17 @@ export default function StudentProfile() {
         <Header title="Thông Tin Cá Nhân" />
         <div className="dashboard-body">
           <div className="profile-card">
+            
             <div className="profile-header">
-              {isEditing ? (
-                <label htmlFor="avatar-input" style={{ cursor: 'pointer' }}>
-                  <div className="profile-avatar upload-avatar">
-                    {(formData.avatar || currentUser.avatar) ? (
-                      <img src={formData.avatar || currentUser.avatar} alt="Avatar" />
-                    ) : (
-                      <>
-                        <i className="fa-solid fa-user"></i>
-                        <span className="upload-text">Bấm để thay ảnh</span>
-                      </>
-                    )}
-                  </div>
-                </label>
-              ) : (
-                <div className="profile-avatar">
-                  {(formData.avatar || currentUser.avatar) ? (
-                    <img src={formData.avatar || currentUser.avatar} alt="Avatar" />
-                  ) : (
-                    <i className="fa-solid fa-user"></i>
-                  )}
-                </div>
-              )}
-              <input
-                id="avatar-input"
-                type="file"
-                accept="image/*"
-                onChange={handleAvatarChange}
-                style={{ display: 'none' }}
-              />
+              {/* Khung avatar hoàn toàn tĩnh, không có tính năng upload hay thay đổi hình */}
+              <div className="profile-avatar">
+                <img 
+                  src={avatarUrl} 
+                  alt="Avatar" 
+                  style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} 
+                />
+              </div>
+              
               <div className="profile-info">
                 <h2>{currentUser.fullName}</h2>
                 <p>{currentUser.role === 'student' ? 'Sinh viên' : currentUser.role === 'admin' ? 'Quản lý' : 'Kỹ thuật viên'}</p>
@@ -115,14 +89,6 @@ export default function StudentProfile() {
             {!isEditing ? (
               <>
                 <div className="profile-details">
-                  <div className="detail-row">
-                    <label>Email</label>
-                    <span>{currentUser.email}</span>
-                  </div>
-                  <div className="detail-row">
-                    <label>Số điện thoại</label>
-                    <span>{currentUser.phone || 'Chưa cập nhật'}</span>
-                  </div>
                   {currentUser.room && (
                     <div className="detail-row">
                       <label>Phòng KTX</label>
@@ -131,7 +97,12 @@ export default function StudentProfile() {
                   )}
                   <div className="detail-row">
                     <label>Ngày tham gia</label>
-                    <span>{new Date(currentUser.createdAt).toLocaleDateString('vi-VN')}</span>
+                    {/* Đã xử lý lỗi Invalid Date bằng cách check xem createdAt có tồn tại hay không */}
+                    <span>{currentUser.createdAt ? new Date(currentUser.createdAt).toLocaleDateString('vi-VN') : 'Chưa cập nhật'}</span>
+                  </div>
+                  <div className="detail-row">
+                    <label>Khoá Học</label>
+                    <span>{currentUser.course || 'Chưa cập nhật'}</span>
                   </div>
                 </div>
 
