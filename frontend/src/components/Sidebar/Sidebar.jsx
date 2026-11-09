@@ -34,7 +34,6 @@ export default function Sidebar({ role = 'student' }) {
       items: [
         { path: '/worker-dashboard', label: 'Tổng quan', icon: 'fa-house' },
         { path: '/worker/tasks', label: 'Việc được giao', icon: 'fa-toolbox' },
-        { path: '/worker/history', label: 'Lịch sử sửa chữa', icon: 'fa-clock-rotate-left' },
         { path: '/worker/complain', label: 'Khiếu nại'},
         { path: '/worker/notification', label: 'Thông báo'},
         { path: '/worker/profile', label: 'Thông tin cá nhân'}

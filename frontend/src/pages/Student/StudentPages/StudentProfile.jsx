@@ -106,9 +106,6 @@ export default function StudentProfile() {
                   </div>
                 </div>
 
-                <button className="btn-primary" onClick={() => setIsEditing(true)}>
-                  <i className="fa-solid fa-edit"></i> Chỉnh sửa thông tin
-                </button>
               </>
             ) : (
               <div className="form-box">

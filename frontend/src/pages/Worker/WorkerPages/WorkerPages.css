@@ -1,0 +1,207 @@
+
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+.app-container {
+display: flex;
+height: 100vh;
+overflow: hidden;
+}
+
+.main-content {
+flex: 1;
+display: flex;
+flex-direction: column;
+overflow-y: auto;
+background-color: #f8fafc; /* Nền xám nhạt cho trang */
+}
+
+.dashboard-body {
+padding: 40px;
+max-width: 1000px;
+margin: 0 auto;
+width: 100%;
+}
+
+/* =========================================
+PROFILE CARD (THÔNG TIN CÁ NHÂN THỢ)
+========================================= */
+.profile-card {
+background: white;
+border-radius: 16px;
+border: 1px solid #e2e8f0;
+padding: 40px;
+box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.profile-header {
+display: flex;
+align-items: center;
+gap: 24px;
+margin-bottom: 32px;
+padding-bottom: 32px;
+border-bottom: 1px solid #e2e8f0;
+}
+
+/* Khung Avatar tĩnh của Thợ */
+.profile-avatar {
+width: 120px;
+height: 120px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+overflow: hidden;
+border: 4px solid #fff;
+box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+background-color: #e2e8f0;
+}
+
+.profile-avatar img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+.profile-info h2 {
+font-size: 28px;
+font-weight: 800;
+color: #1e293b;
+margin-bottom: 8px;
+}
+
+.profile-info p {
+font-size: 16px;
+color: #64748b;
+}
+
+/* Chi tiết thông tin */
+.profile-details {
+margin-bottom: 32px;
+}
+
+.detail-row {
+display: flex;
+justify-content: space-between;
+padding: 16px 0;
+border-bottom: 1px dashed #e2e8f0;
+}
+
+.detail-row:last-child {
+border-bottom: none;
+}
+
+.detail-row label {
+font-weight: 600;
+color: #64748b;
+min-width: 200px; /* Rộng hơn chút cho nhãn của Thợ */
+}
+
+.detail-row span {
+color: #1e293b;
+font-weight: 600;
+}
+
+/* =========================================
+FORM CHỈNH SỬA THÔNG TIN
+========================================= */
+.form-box {
+background: #f8fafc;
+padding: 32px;
+border-radius: 12px;
+border: 1px solid #e2e8f0;
+margin-bottom: 24px;
+}
+
+.form-group {
+margin-bottom: 24px;
+}
+
+.form-group label {
+display: block;
+font-size: 14px;
+font-weight: 700;
+color: #1e293b;
+margin-bottom: 8px;
+}
+
+.form-group input {
+width: 100%;
+padding: 12px 14px;
+border: 1px solid #cbd5e1;
+border-radius: 8px;
+font-size: 14px;
+background: white;
+transition: all 0.2s;
+}
+
+.form-group input:focus {
+outline: none;
+border-color: #0f766e;
+box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+}
+
+
+.btn-primary {
+background: #0f766e;
+color: white;
+border: none;
+padding: 12px 24px;
+border-radius: 8px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s;
+display: inline-flex;
+align-items: center;
+gap: 8px;
+}
+
+.btn-primary:hover {
+background: #115e59;
+transform: translateY(-2px);
+box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
+}
+
+.btn-secondary {
+background: #e2e8f0;
+color: #475569;
+border: none;
+padding: 12px 24px;
+border-radius: 8px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s;
+display: inline-flex;
+align-items: center;
+gap: 8px;
+}
+
+.btn-secondary:hover {
+background: #cbd5e1;
+}
+
+/* =========================================
+RESPONSIVE CHO ĐIỆN THOẠI
+========================================= */
+@media (max-width: 768px) {
+.dashboard-body {
+padding: 20px;
+}
+
+.profile-header {
+flex-direction: column;
+text-align: center;
+}
+
+.detail-row {
+flex-direction: column;
+gap: 8px;
+}
+
+.detail-row label {
+min-width: auto;
+}
+}

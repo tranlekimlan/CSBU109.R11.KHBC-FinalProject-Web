@@ -15,6 +15,9 @@ import AdminReports from './pages/Admin/AdminPages/AdminReports.jsx';
 import ComplaintManagement from './pages/Admin/AdminPages/ComplaintManagement.jsx';
 import StudentComplaints from './pages/Student/StudentPages/StudentComplaints.jsx';
 import StudentProfile from './pages/Student/StudentPages/StudentProfile.jsx';
+import WorkerTicket from './pages/Worker/WorkerPages/AllTickets.jsx';
+import WorkerProfile from './pages/Worker/WorkerPages/WorkerProfile.jsx';
+import WorkerNotification from './pages/Worker/WorkerPages/WorkerNotification.jsx';
 
 function App() {
   return (
@@ -36,6 +39,9 @@ function App() {
         <Route path="/admin/reports" element={<AdminReports />} />
         <Route path="/admin/complaints" element={<ComplaintManagement />} />
         <Route path="/worker-dashboard" element={<WorkerDashboard />} />
+        <Route path="/worker/tasks" element={<WorkerTicket />} />
+        <Route path="/worker/profile" element={<WorkerProfile/>} />
+        <Route path="/worker/notification" element={<WorkerNotification/>}/>
       </Routes>
     </BrowserRouter>
   );
