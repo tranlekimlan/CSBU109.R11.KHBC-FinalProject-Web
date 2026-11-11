@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 body {
@@ -140,7 +140,8 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
   padding: 16px 24px;
   text-align: left;
 }
@@ -252,17 +253,18 @@ td {
     font-size: 12px;
   }
 
-  th, td {
+  th,
+  td {
     padding: 12px 8px;
   }
 }
 
 /* CSS canh chỉnh cho icon tự chọn */
 .custom-stat-img {
-  width: 32px;  
+  width: 32px;
   height: 32px;
-  object-fit: contain; 
-  filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.1)); 
+  object-fit: contain;
+  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 /* Nút Xem chi tiết - Màu xanh quân sự */
@@ -322,13 +324,23 @@ td {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { transform: translateY(30px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* Header của Pop-up (Kế thừa từ .cr-header) */
@@ -413,7 +425,7 @@ td {
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   cursor: zoom-in;
 }
 
@@ -486,8 +498,14 @@ td {
 }
 
 @keyframes zoomInBounce {
-  from { transform: scale(0.7); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .sd-zoom-close {
@@ -551,7 +569,9 @@ td {
   font-size: 32px;
   color: #d1d5db;
   cursor: pointer;
-  transition: transform 0.15s ease, color 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    color 0.15s ease;
   line-height: 1;
   padding: 2px 4px;
 }
@@ -581,7 +601,9 @@ td {
   resize: vertical;
   min-height: 70px;
   font-family: inherit;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
   margin-bottom: 14px;
 }
 
