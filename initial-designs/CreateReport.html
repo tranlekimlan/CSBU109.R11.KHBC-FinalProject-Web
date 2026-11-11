@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tạo Báo Cáo Sự Cố - QFix</title>
+  
+  <!-- Import Font chữ Inter giống React -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* RESET CƠ BẢN */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #f8fafc; /* Nền xám nhạt để làm nổi bật form trắng */
+      color: #334155;
+      /* Đã bỏ flex center để form tràn tự nhiên từ trên xuống */
+      padding: 40px; /* Giữ một chút lề để form không dán chặt vào mép màn hình */
+      min-height: 100vh;
+    }
+
+    /* KHUNG FORM CHÍNH TRÀN VIỀN */
+    .form-wrapper {
+      width: 100%;
+      /* Đã xóa max-width: 850px để form bung rộng 100% theo màn hình */
+      background-color: #ffffff;
+      border: 10px solid #0a5c36; /* VIỀN XANH QUÂN SỰ DÀY */
+      border-radius: 24px; /* Bo góc mượt mà */
+      overflow: hidden; /* Cắt gọn các góc thừa để không lẹm ra ngoài viền */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    /* PHẦN HEADER MÀU XANH */
+    .form-header {
+      background-color: #0a5c36;
+      color: #ffffff;
+      text-align: center;
+      padding: 40px 30px;
+    }
+
+    .form-header h2 {
+      font-size: 32px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      color: #ffffff;
+    }
+
+    .form-header p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #e2e8f0;
+    }
+
+    /* PHẦN NỘI DUNG FORM NHẬP LIỆU */
+    .form-content {
+      padding: 50px; /* Tăng padding bên trong cho cân đối với form bự */
+    }
+
+    /* Bố cục chia 2 cột cho Tiêu đề & Số phòng */
+    .form-row {
+      display: flex;
+      gap: 40px; /* Tăng khoảng cách giữa các cột khi form giãn rộng */
+    }
+
+    .form-group {
+      flex: 1;
+      margin-bottom: 32px; /* Tăng khoảng cách giữa các hàng */
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 16px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 12px;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="file"],
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 16px 20px; /* Tăng kích thước ô nhập liệu cho tương xứng */
+      border: 1px solid #94a3b8;
+      border-radius: 8px;
+      font-size: 16px;
+      color: #1e293b;
+      background-color: #ffffff;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #0a5c36;
+      box-shadow: 0 0 0 3px rgba(10, 92, 54, 0.15); /* Viền sáng xanh lá khi click */
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 150px; /* Khung mô tả rộng hơn */
+    }
+
+    .form-group small {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #64748b;
+    }
+
+    /* Khu vực nút bấm */
+    .form-actions {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .btn-submit,
+    .btn-cancel {
+      padding: 16px 40px; /* Nút to hơn */
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-submit {
+      background-color: #0a5c36;
+      color: white;
+    }
+
+    .btn-submit:hover {
+      background-color: #08492b;
+      transform: translateY(-2px);
+    }
+
+    .btn-cancel {
+      background-color: #f1f5f9;
+      color: #475569;
+    }
+
+    .btn-cancel:hover {
+      background-color: #e2e8f0;
+    }
+
+    /* Đáp ứng màn hình điện thoại nhỏ */
+    @media (max-width: 768px) {
+      body {
+        padding: 20px;
+      }
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+      .form-header {
+        padding: 30px 20px;
+      }
+      .form-content {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-wrapper">
+    <!-- Header của khối form -->
+    <div class="form-header">
+      <h2>Báo Cáo Sự Cố Mới</h2>
+      <p>Vui lòng mô tả chi tiết sự cố mà bạn phát hiện.<br>BQL sẽ tiếp nhận và cử thợ đến xử lý sớm nhất.</p>
+    </div>
+
+    <!-- Nội dung form -->
+    <form class="form-content" onsubmit="event.preventDefault(); alert('Đây là form tĩnh, chưa gắn API!');">
+      
+      <!-- Hàng 1: Tiêu đề và Phòng -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="title">Tiêu đề sự cố *</label>
+          <input type="text" id="title" placeholder="VD: Quạt kêu to" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="room">Số phòng *</label>
+          <input type="text" id="room" placeholder="VD: A202" required>
+        </div>
+      </div>
+
+      <!-- Hàng 2: Danh mục -->
+      <div class="form-group">
+        <label for="category">Danh mục *</label>
+        <select id="category" required>
+          <option value="">-- Chọn loại sự cố --</option>
+          <option value="dien">Điện / Ánh sáng</option>
+          <option value="nuoc">Hệ thống Nước</option>
+          <option value="noithat">Mộc / Nội thất</option>
+          <option value="vesinh">Vệ sinh</option>
+          <option value="khac">Khác</option>
+        </select>
+      </div>
+
+      <!-- Hàng 3: Hình ảnh -->
+      <div class="form-group">
+        <label for="image">Hình ảnh đính kèm (Tùy chọn)</label>
+        <input type="file" id="image" accept="image/*">
+        <small>Hỗ trợ định dạng JPG, PNG (Tối đa 5MB)</small>
+      </div>
+
+      <!-- Hàng 4: Mô tả -->
+      <div class="form-group">
+        <label for="description">Mô tả chi tiết tình trạng *</label>
+        <textarea id="description" placeholder="Vui lòng cung cấp thêm thông tin: Sự cố bắt đầu từ khi nào? Đã thử tự khắc phục chưa?..." required></textarea>
+      </div>
+
+      <!-- Khu vực nút bấm -->
+      <div class="form-actions">
+        <button type="submit" class="btn-submit">Gửi Yêu Cầu</button>
+        <button type="button" class="btn-cancel">Quay lại</button>
+      </div>
+
+    </form>
+  </div>
+
+</body>
+</html>
