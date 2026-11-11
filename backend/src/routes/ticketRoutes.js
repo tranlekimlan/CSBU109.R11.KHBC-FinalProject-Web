@@ -12,7 +12,10 @@ router.get('/', ticketController.getAllTickets);
 router.put('/:id', ticketController.updateTicketStatus);
 router.delete('/:id', ticketController.deleteTicket);
 
-// THÊM: Routes của Thợ (Worker)
+// Routes của Thợ (Worker)
 router.get('/worker/:workerId', ticketController.getTicketsByWorker);
+
+// THÊM: Route đánh giá (Sinh viên đánh giá sau khi resolved)
+router.post('/:id/rate', ticketController.rateTicket);
 
 module.exports = router;

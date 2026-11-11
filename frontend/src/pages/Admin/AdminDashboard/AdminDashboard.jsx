@@ -61,6 +61,7 @@ export default function AdminDashboard() {
   const statusBadge = {
     pending: { label: 'Chờ duyệt', class: 'badge-pending' },
     progress: { label: 'Đang xử lý', class: 'badge-progress' },
+    assigned: { label: 'Chưa Bắt Đầu', class: 'badge-assigned' },
     resolved: { label: 'Đã xong', class: 'badge-resolved' }
   };
 

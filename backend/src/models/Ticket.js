@@ -9,7 +9,12 @@ const ticketSchema = new mongoose.Schema({
   status: { type: String, enum: ['pending', 'assigned', 'progress', 'resolved', 'archived'], default: 'pending' },
   studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, 
   workerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },   
-  imageUrls: [{ type: String}]
+  imageUrls: [{ type: String}],
+  rating: {
+    score: { type: Number, min: 1, max: 5, default: null },
+    comment: { type: String, default: null },
+    ratedAt: { type: Date, default: null }
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Ticket', ticketSchema);

@@ -18,6 +18,7 @@ import StudentProfile from './pages/Student/StudentPages/StudentProfile.jsx';
 import WorkerTicket from './pages/Worker/WorkerPages/AllTickets.jsx';
 import WorkerProfile from './pages/Worker/WorkerPages/WorkerProfile.jsx';
 import WorkerNotification from './pages/Worker/WorkerPages/WorkerNotification.jsx';
+import WorkerRating from './pages/Worker/WorkerPages/WorkerRating.jsx';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         <Route path="/worker/tasks" element={<WorkerTicket />} />
         <Route path="/worker/profile" element={<WorkerProfile/>} />
         <Route path="/worker/notification" element={<WorkerNotification/>}/>
+        <Route path="/worker/complain" element={<WorkerRating/>}/>
       </Routes>
     </BrowserRouter>
   );
