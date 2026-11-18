@@ -34,7 +34,7 @@ export default function WorkerRating() {
   const fetchWorkerRatings = async (workerId) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/tickets/worker/${workerId}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/tickets/worker/${workerId}`);
       if (response.ok) {
         const data = await response.json();
         // Lọc các công việc đã có sinh viên đánh giá

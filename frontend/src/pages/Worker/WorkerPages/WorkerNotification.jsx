@@ -4,7 +4,7 @@ import Sidebar from '../../../components/Sidebar/Sidebar';
 import Header from '../../../components/Header/Header';
 import '../../Student/Notifications/Notifications.css';
 
-const API = 'http://localhost:5000/api';
+const API = import.meta.env.VITE_API_URL;
 
 const TYPE_CONFIG = {
   new_task:        { icon: 'fa-clipboard-list', color: 'blue',   filterKey: 'new_task'  },

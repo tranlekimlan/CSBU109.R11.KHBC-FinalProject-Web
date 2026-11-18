@@ -26,7 +26,7 @@ export default function AdminReports() {
 
   const fetchTickets = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/tickets');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/tickets`);
       if (response.ok) {
         const data = await response.json();
         setTickets(data);

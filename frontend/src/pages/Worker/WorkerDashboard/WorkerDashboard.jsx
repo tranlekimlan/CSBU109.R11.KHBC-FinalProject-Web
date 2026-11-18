@@ -44,7 +44,7 @@ export default function WorkerDashboard() {
   // 2. GỌI API LẤY DANH SÁCH CÔNG VIỆC
   const fetchTasks = async (workerId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/tickets/worker/${workerId}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/tickets/worker/${workerId}`);
       if (response.ok) {
         const data = await response.json();
         setTasks(data);
@@ -83,7 +83,7 @@ export default function WorkerDashboard() {
     if (!selectedTask || !newStatus) return;
     
     try {
-      const response = await fetch(`http://localhost:5000/api/tickets/${selectedTask._id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/tickets/${selectedTask._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus })

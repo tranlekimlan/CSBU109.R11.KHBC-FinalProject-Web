@@ -34,7 +34,7 @@ export default function WorkerTasks() {
 
   const fetchTasks = async (workerId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/tickets/worker/${workerId}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/tickets/worker/${workerId}`);
       if (response.ok) {
         const data = await response.json();
         setTasks(data);
@@ -67,7 +67,7 @@ export default function WorkerTasks() {
     if (!selectedTask || !newStatus) return;
     
     try {
-      const response = await fetch(`http://localhost:5000/api/tickets/${selectedTask._id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/tickets/${selectedTask._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus })

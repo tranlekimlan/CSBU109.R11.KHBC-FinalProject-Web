@@ -30,7 +30,7 @@ export default function ComplaintManagement() {
 
   const fetchComplaints = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/complaints');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/complaints`);
       if (response.ok) {
         const data = await response.json();
         setComplaints(data || []);
@@ -62,7 +62,7 @@ export default function ComplaintManagement() {
     if (!selectedComplaint || !newStatus) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/complaints/${selectedComplaint._id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/complaints/${selectedComplaint._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus })
@@ -86,7 +86,7 @@ export default function ComplaintManagement() {
     if (!selectedComplaint || !replyText.trim()) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/complaints/${selectedComplaint._id}/reply`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/complaints/${selectedComplaint._id}/reply`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reply: replyText })

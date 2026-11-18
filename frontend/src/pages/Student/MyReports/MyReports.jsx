@@ -38,7 +38,7 @@ export default function MyReports() {
     if (!ratingScore || !selectedReport) return;
     setIsSubmittingRating(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/tickets/${selectedReport._id}/rate`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/tickets/${selectedReport._id}/rate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ score: ratingScore, comment: ratingComment })
@@ -85,7 +85,7 @@ export default function MyReports() {
 
   const fetchMyReports = async (studentId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/tickets/student/${studentId}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/tickets/student/${studentId}`);
       if (response.ok) {
         const data = await response.json();
         setReports(data);

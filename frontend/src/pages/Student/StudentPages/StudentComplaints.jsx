@@ -45,14 +45,14 @@ export default function StudentComplaints() {
     setIsLoading(true);
     try {
       // 1. Lấy danh sách sự cố của sinh viên để lọc ra lịch sử đánh giá
-      const ticketRes = await fetch(`http://localhost:5000/api/tickets/student/${studentId}`);
+      const ticketRes = await fetch(`${import.meta.env.VITE_API_URL}/tickets/student/${studentId}`);
       if (ticketRes.ok) {
         const ticketData = await ticketRes.json();
         setTickets(ticketData || []);
       }
 
       // 2. Lấy danh sách khiếu nại riêng (nếu có)
-      const compRes = await fetch(`http://localhost:5000/api/complaints/student/${studentId}`);
+      const compRes = await fetch(`${import.meta.env.VITE_API_URL}/complaints/student/${studentId}`);
       if (compRes.ok) {
         const compData = await compRes.json();
         setComplaints(compData || []);
@@ -87,7 +87,7 @@ export default function StudentComplaints() {
     if (!ratingScore || !selectedTicket) return;
     setIsSubmittingRating(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/tickets/${selectedTicket._id}/rate`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/tickets/${selectedTicket._id}/rate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ score: ratingScore, comment: ratingComment })
@@ -119,7 +119,7 @@ export default function StudentComplaints() {
     setIsSubmittingComplaint(true);
     try {
       const studentId = currentUser.id || currentUser._id;
-      const res = await fetch('http://localhost:5000/api/complaints', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/complaints`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

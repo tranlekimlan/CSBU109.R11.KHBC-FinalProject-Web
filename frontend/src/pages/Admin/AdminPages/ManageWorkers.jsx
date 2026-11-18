@@ -40,7 +40,7 @@ export default function ManageWorkers() {
   const fetchTickets = async () => {
     try {
       // 2. Sửa https thành http
-      const response = await fetch("http://localhost:5000/api/tickets"); 
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/tickets`); 
       if (response.ok) {
         // 3. Sửa response.json thành response.json()
         const data = await response.json(); 
@@ -53,7 +53,7 @@ export default function ManageWorkers() {
 
   const fetchWorkers = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/workers");
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/workers`);
       if (response.ok) {
         const data = await response.json();
         setWorkers(data);
@@ -73,8 +73,8 @@ export default function ManageWorkers() {
 
     try {
       const url = editingId
-        ? `http://localhost:5000/api/workers/${editingId}`
-        : "http://localhost:5000/api/workers";
+        ? `${import.meta.env.VITE_API_URL}/workers/${editingId}`
+        : `${import.meta.env.VITE_API_URL}/workers`;
 
       const method = editingId ? "PUT" : "POST";
 
@@ -109,7 +109,7 @@ export default function ManageWorkers() {
     if (!window.confirm("Bạn chắc chắn muốn xóa nhân viên này?")) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/workers/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/workers/${id}`, {
         method: "DELETE",
       });
 
@@ -144,7 +144,7 @@ export default function ManageWorkers() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/tickets/${selectedTicketId}`,
+        `${import.meta.env.VITE_API_URL}/tickets/${selectedTicketId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

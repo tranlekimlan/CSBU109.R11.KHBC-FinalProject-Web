@@ -75,7 +75,7 @@ export default function CreateReport() {
         });
       }
 
-      const response = await fetch('http://localhost:5000/api/tickets/create', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/tickets/create`, {
         method: 'POST',
         // QUAN TRỌNG: Không set Content-Type là application/json nữa, 
         // trình duyệt sẽ TỰ ĐỘNG set Content-Type thành multipart/form-data khi truyền submitData

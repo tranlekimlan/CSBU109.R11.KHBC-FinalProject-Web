@@ -35,7 +35,7 @@ export default function AdminDashboard() {
 
   const fetchAllTickets = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/tickets');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/tickets`);
       if (response.ok) {
         const data = await response.json();
         setTickets(data);
@@ -78,7 +78,7 @@ export default function AdminDashboard() {
     if (!selectedTicket || !newStatus) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/tickets/${selectedTicket._id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/tickets/${selectedTicket._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus })
@@ -105,7 +105,7 @@ export default function AdminDashboard() {
 
     try {
       // Gọi API cập nhật trạng thái thành 'archived'
-      const response = await fetch(`http://localhost:5000/api/tickets/${selectedTicket._id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/tickets/${selectedTicket._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: 'archived' })

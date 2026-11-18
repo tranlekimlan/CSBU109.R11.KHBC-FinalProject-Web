@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Sidebar.css';
 
-const API = 'http://localhost:5000/api';
+const API = import.meta.env.VITE_API_URL;
 
 // Thêm prop "role" để tự động biết đang đứng ở trang của ai. Mặc định là 'student'
 export default function Sidebar({ role = 'student' }) {

@@ -35,7 +35,7 @@ export default function StudentDashboard() {
     if (!ratingScore || !selectedReport) return;
     setIsSubmittingRating(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/tickets/${selectedReport._id}/rate`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/tickets/${selectedReport._id}/rate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ score: ratingScore, comment: ratingComment })
@@ -73,7 +73,7 @@ export default function StudentDashboard() {
   const fetchReports = async (studentId) => {
     try {
       // Đảm bảo bạn đã thêm ticketRoutes vào backend như mình hướng dẫn ở trên nhé
-      const response = await fetch(`http://localhost:5000/api/tickets/student/${studentId}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/tickets/student/${studentId}`);
       if (response.ok) {
         const data = await response.json();
         setReports(data);
