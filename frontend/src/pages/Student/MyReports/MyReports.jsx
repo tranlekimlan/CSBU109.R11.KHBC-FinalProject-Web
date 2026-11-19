@@ -421,7 +421,7 @@ export default function MyReports() {
 
               <div className="sd-actions">
                 <button className="sd-btn-close" onClick={() => setSelectedReport(null)}>
-                  Đóng Pop-up
+                  Đóng
                 </button>
               </div>
 
