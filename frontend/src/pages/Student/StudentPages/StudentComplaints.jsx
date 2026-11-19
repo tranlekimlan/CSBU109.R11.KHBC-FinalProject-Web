@@ -503,7 +503,7 @@ export default function StudentComplaints() {
 
               <div className="sd-actions">
                 <button className="sd-btn-close" onClick={() => setSelectedTicket(null)}>
-                  Đóng Pop-up
+                  Đóng
                 </button>
               </div>
             </div>
