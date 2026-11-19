@@ -81,6 +81,9 @@ Sinh viên → Nhắn Zalo → Lớp trưởng → Cán bộ quản lý → Th�
 | **HTTP Client** | Axios |
 | **Export** | ExcelJS + FileSaver |
 | **Dev Tools** | Nodemon, ESLint |
+| **Backend Deployment** | Render Web Service |
+| **Frontend Deployment** | Vercel |
+| **Domain Service** | INet |
 
 ---
 
