@@ -286,15 +286,14 @@ td {
   animation: fadeIn 0.2s ease-in-out;
 }
 
-/* Khung form viền dày (Kế thừa từ .cr-form-box) */
 .sd-modal-box {
   width: 100%;
   max-width: 850px;
-  max-height: 90vh; /* Không để dài quá màn hình */
+  max-height: 85vh; /* Thay đổi từ 90vh thành 85vh để tránh bị dính sát mép */
   background-color: #ffffff;
   border: 10px solid #0a5c36;
   border-radius: 24px;
-  overflow-y: auto; /* Cho phép cuộn nếu nội dung dài */
+  overflow-y: auto; /* Dòng này quan trọng: bật thanh cuộn dọc */
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
   animation: slideUp 0.3s ease-out;
 }
@@ -426,6 +425,12 @@ td {
 
 /* ================= RESPONSIVE CHO ĐIỆN THOẠI (TRUE CARD UI) ================= */
 @media (max-width: 768px) {
+  .sd-modal-box {
+    max-height: 85vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Bật cuộn mượt trên các thiết bị iOS (iPhone/iPad) */
+  }
+
   .dashboard-body {
     padding: 15px;
   }
