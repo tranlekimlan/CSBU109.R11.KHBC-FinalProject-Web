@@ -121,12 +121,6 @@ export default function StudentDashboard() {
           <div className="welcome-banner">
             <div className="welcome-text">
               <h2>Xin chào, {currentUser ? currentUser.fullName : 'Sinh viên'}! 👋</h2>
-              {currentUser && currentUser.room && (
-                <p style={{ fontWeight: 'bold', marginBottom: '6px', color: '#e2e8f0' }}>
-                  <i className="fa-solid fa-door-closed" style={{ marginRight: '6px' }}></i>
-                  Phòng KTX: {currentUser.room}
-                </p>
-              )}
               <p>Bạn có phát hiện hỏng hóc gì trong phòng không? Hãy báo cáo ngay cho Ban quản lý nhé.</p>
             </div>
             <button className="btn-create-ticket" onClick={() => navigate('/create-report')}>
@@ -175,19 +169,18 @@ export default function StudentDashboard() {
                 <tbody>
                   {reports.map((report) => (
                     <tr key={report._id}>
-                      {/* Cắt 4 số cuối của ID MongoDB làm Mã lỗi cho gọn */}
-                      <td>QF-{report._id.substring(report._id.length - 4).toUpperCase()}</td>
-                      <td className="ticket-title">{report.title}</td>
-                      <td>{report.category}</td>
-                      <td>{formatDate(report.createdAt)}</td>
-                      <td>
+                      <td data-label="Mã Lỗi">QF-{report._id.substring(report._id.length - 4).toUpperCase()}</td>
+                      <td data-label="Nội dung" className="ticket-title">{report.title}</td>
+                      <td data-label="Danh mục">{report.category}</td>
+                      <td data-label="Ngày báo">{formatDate(report.createdAt)}</td>
+                      <td data-label="Trạng thái">
                         <span className={`badge ${statusBadge[report.status]?.class || 'badge-pending'}`}>
                           {statusBadge[report.status]?.label || 'Không rõ'}
                         </span>
                       </td>
-                      <td>
+                      <td data-label="Thao tác">
                         <button className="btn-view-detail" onClick={() => openReportDetail(report)}>
-                          Xem
+                          Xem chi tiết
                         </button>
                       </td>
                     </tr>

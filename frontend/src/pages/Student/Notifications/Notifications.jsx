@@ -117,21 +117,39 @@ export default function Notifications() {
 
             {/* Filters */}
             <div className="filter-buttons">
-              {[
-                { key: 'all',    label: 'Tất cả' },
-                { key: 'unread', label: 'Chưa đọc' },
-                { key: 'report', label: 'Báo cáo' },
-                { key: 'status', label: 'Cập nhật trạng thái' },
-                { key: 'rating', label: 'Đánh giá' },
-              ].map(f => (
-                <button
-                  key={f.key}
-                  className={`filter-btn ${filter === f.key ? 'active' : ''}`}
-                  onClick={() => setFilter(f.key)}
+              {/* --- GIAO DIỆN MÁY TÍNH: Hiện các nút --- */}
+              <div className="desktop-filters">
+                {[
+                  { key: 'all',    label: 'Tất cả' },
+                  { key: 'unread', label: 'Chưa đọc' },
+                  { key: 'report', label: 'Báo cáo' },
+                  { key: 'status', label: 'Cập nhật trạng thái' },
+                  { key: 'rating', label: 'Đánh giá' },
+                ].map(f => (
+                  <button
+                    key={f.key}
+                    className={`filter-btn ${filter === f.key ? 'active' : ''}`}
+                    onClick={() => setFilter(f.key)}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* --- GIAO DIỆN ĐIỆN THOẠI: Hiện Dropdown --- */}
+              <div className="mobile-filters">
+                <select
+                  className="filter-select"
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
                 >
-                  {f.label}
-                </button>
-              ))}
+                  <option value="all">Tất cả</option>
+                  <option value="unread">Chưa đọc</option>
+                  <option value="report">Báo cáo</option>
+                  <option value="status">Cập nhật trạng thái</option>
+                  <option value="rating">Đánh giá</option>
+                </select>
+              </div>
             </div>
 
             {/* List */}
