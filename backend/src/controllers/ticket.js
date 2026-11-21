@@ -10,20 +10,24 @@ exports.createTicket = async (req, res) => {
     const imageUrls = (req.files && Array.isArray(req.files)) 
                         ? req.files.map(file => file.path) 
                         : [];
+    
+    // Luồng chính: Lưu Ticket (Bắt buộc phải đợi - await)
     const newTicket = new Ticket({ title, room, category, description, studentId, imageUrls });
     await newTicket.save();
 
-    // --- THÔNG BÁO: Báo cáo tạo thành công ---
-    await createNotification({
+    // TRẢ VỀ KẾT QUẢ NGAY LẬP TỨC CHO FRONTEND (Không bắt user đợi thông báo)
+    res.status(201).json({ message: 'Tạo báo cáo thành công!', ticket: newTicket });
+
+    // --- THÔNG BÁO: Chạy ngầm (Fire-and-forget), không có chữ await, có .catch để gom lỗi ---
+    createNotification({
       recipientId: studentId,
       recipientRole: 'student',
       type: 'report_created',
       title: 'Báo cáo đã được gửi thành công!',
       message: `Báo cáo "${title}" của bạn tại phòng ${room} đã được tiếp nhận. Ban quản lý sẽ xem xét và phân công thợ sớm nhất.`,
       ticketId: newTicket._id
-    });
+    }).catch(err => console.error("Lỗi ngầm khi tạo thông báo createTicket:", err.message));
 
-    res.status(201).json({ message: 'Tạo báo cáo thành công!', ticket: newTicket });
   } catch (error) {
     console.error("Lỗi khi tạo Ticket:", error.message);
     res.status(500).json({ message: 'Lỗi server', error: error.message });
@@ -57,7 +61,6 @@ exports.updateTicketStatus = async (req, res) => {
     const { id } = req.params;
     const { status, workerId } = req.body;
 
-    // Lấy vé cũ trước khi update để so sánh
     const oldTicket = await Ticket.findById(id);
     if (!oldTicket) {
       return res.status(404).json({ message: 'Không tìm thấy báo cáo này!' });
@@ -70,64 +73,63 @@ exports.updateTicketStatus = async (req, res) => {
 
     const updatedTicket = await Ticket.findByIdAndUpdate(id, updateData, { new: true });
 
-    // --- THÔNG BÁO: Admin giao thợ cho sinh viên ---
+    // TRẢ VỀ FRONTEND NGAY
+    res.status(200).json(updatedTicket);
+
+    // --- CÁC THÔNG BÁO CHẠY NGẦM ---
     if (workerId && status === 'assigned' && !oldTicket.workerId) {
-      await createNotification({
+      createNotification({
         recipientId: updatedTicket.studentId,
         recipientRole: 'student',
         type: 'worker_assigned',
         title: 'Thợ đã được phân công cho báo cáo của bạn!',
         message: `Báo cáo "${updatedTicket.title}" tại phòng ${updatedTicket.room} đã được tiếp nhận và sẽ sớm được xử lý.`,
         ticketId: updatedTicket._id
-      });
+      }).catch(err => console.error("Lỗi ngầm báo SV:", err.message));
 
-      // Thông báo cho thợ được nhận việc mới
-      await createNotification({
+      createNotification({
         recipientId: workerId,
         recipientRole: 'worker',
         type: 'new_task',
         title: 'Bạn vừa được giao một công việc mới!',
         message: `Phòng ${updatedTicket.room}: "${updatedTicket.title}". Vui lòng kiểm tra chi tiết và bắt đầu xử lý sớm nhất.`,
         ticketId: updatedTicket._id
-      });
+      }).catch(err => console.error("Lỗi ngầm báo Thợ:", err.message));
     }
 
-    // --- THÔNG BÁO: Thợ cập nhật trạng thái ---
     if (status === 'progress' && oldTicket.status !== 'progress') {
-      await createNotification({
+      createNotification({
         recipientId: updatedTicket.studentId,
         recipientRole: 'student',
         type: 'status_update',
         title: 'Thợ đang xử lý báo cáo của bạn',
-        message: `Báo cáo "${updatedTicket.title}" tại phòng ${updatedTicket.room} hiện đang được thợ sửa chữa. Chúng tôi sẽ thông báo khi hoàn thành.`,
+        message: `Báo cáo "${updatedTicket.title}" tại phòng ${updatedTicket.room} hiện đang được thợ sửa chữa.`,
         ticketId: updatedTicket._id
-      });
+      }).catch(err => console.error("Lỗi ngầm thông báo progress:", err.message));
     }
 
     if (status === 'resolved' && oldTicket.status !== 'resolved') {
-      await createNotification({
+      createNotification({
         recipientId: updatedTicket.studentId,
         recipientRole: 'student',
         type: 'status_update',
         title: 'Báo cáo của bạn đã được giải quyết! ✅',
-        message: `Sự cố "${updatedTicket.title}" tại phòng ${updatedTicket.room} đã được sửa xong. Bạn có thể đánh giá chất lượng công việc trong mục "Báo cáo của tôi".`,
+        message: `Sự cố "${updatedTicket.title}" tại phòng ${updatedTicket.room} đã được sửa xong.`,
         ticketId: updatedTicket._id
-      });
+      }).catch(err => console.error("Lỗi ngầm thông báo resolved cho SV:", err.message));
 
-      // Thông báo cho thợ: công việc đã hoàn thành
       if (updatedTicket.workerId) {
-        await createNotification({
+        createNotification({
           recipientId: updatedTicket.workerId,
           recipientRole: 'worker',
           type: 'task_closed',
           title: 'Công việc đã được nghiệm thu!',
-          message: `Sự cố "${updatedTicket.title}" tại phòng ${updatedTicket.room} đã được đánh dấu hoàn thành. Cảm ơn bạn đã làm việc hiệu quả!`,
+          message: `Sự cố "${updatedTicket.title}" tại phòng ${updatedTicket.room} đã được đánh dấu hoàn thành.`,
           ticketId: updatedTicket._id
-        });
+        }).catch(err => console.error("Lỗi ngầm thông báo resolved cho Thợ:", err.message));
       }
     }
 
-    res.status(200).json(updatedTicket);
   } catch (error) {
     res.status(500).json({ message: 'Lỗi server', error: error.message });
   }
@@ -194,29 +196,30 @@ exports.rateTicket = async (req, res) => {
 
     const stars = '⭐'.repeat(score);
 
-    // Thông báo cho thợ: nhận được đánh giá
+    // TRẢ VỀ FRONTEND NGAY
+    res.status(200).json({ message: isUpdate ? 'Cập nhật đánh giá thành công!' : 'Đánh giá thành công!', ticket: updatedTicket });
+
+    // --- CHẠY NGẦM THÔNG BÁO ---
     if (ticket.workerId) {
-      await createNotification({
+      createNotification({
         recipientId: ticket.workerId,
         recipientRole: 'worker',
         type: 'rating_received',
         title: isUpdate ? `Đánh giá vừa được cập nhật ${stars}` : `Bạn vừa nhận được đánh giá ${stars}`,
         message: `Sinh viên đã ${isUpdate ? 'cập nhật' : 'đánh giá'} ${score}/5 sao cho công việc tại phòng ${ticket.room}${comment ? `: "${comment}"` : '.'}`,
         ticketId: ticket._id
-      });
+      }).catch(err => console.error("Lỗi ngầm thông báo đánh giá Thợ:", err.message));
     }
 
-    // Thông báo cho sinh viên: đánh giá thành công
-    await createNotification({
+    createNotification({
       recipientId: ticket.studentId,
       recipientRole: 'student',
       type: 'rating_sent',
       title: isUpdate ? 'Cập nhật đánh giá thành công! 🙏' : 'Đánh giá của bạn đã được ghi nhận! 🙏',
-      message: `Cảm ơn bạn đã ${isUpdate ? 'cập nhật' : 'để lại'} ${score}/5 sao cho sự cố "${ticket.title}". Phản hồi của bạn giúp chúng tôi cải thiện dịch vụ.`,
+      message: `Cảm ơn bạn đã để lại phản hồi.`,
       ticketId: ticket._id
-    });
+    }).catch(err => console.error("Lỗi ngầm thông báo đánh giá SV:", err.message));
 
-    res.status(200).json({ message: isUpdate ? 'Cập nhật đánh giá thành công!' : 'Đánh giá thành công!', ticket: updatedTicket });
   } catch (error) {
     res.status(500).json({ message: 'Lỗi server', error: error.message });
   }
