@@ -136,3 +136,66 @@
 .logout-btn:hover {
   background-color: #fef2f2;
 }
+
+/* ================= RESPONSIVE SIDEBAR FOR MOBILE ================= */
+
+/* Nút bật/tắt menu trên mobile (Mặc định ẩn trên máy tính) */
+.mobile-menu-toggle {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: #0a5c36;
+  color: white;
+  border-radius: 50%;
+  border: none;
+  font-size: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 100;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-admin ~ .mobile-menu-toggle { background-color: #0891B2; }
+.sidebar-worker ~ .mobile-menu-toggle { background-color: #d97706; }
+
+/* Lớp phủ màn hình mờ ảo khi mở menu (Mặc định ẩn) */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9;
+}
+
+/* Áp dụng khi màn hình nhỏ hơn 768px (Điện thoại/Tablet nhỏ) */
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: flex; /* Hiện nút bật/tắt */
+  }
+
+  .sidebar {
+    position: fixed; /* Chuyển thành trượt đè lên màn hình */
+    top: 0;
+    left: -260px; /* Giấu ra khỏi mép trái màn hình */
+    height: 100vh;
+    transition: left 0.3s ease;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    z-index: 10;
+  }
+
+  /* Khi được thêm class 'open', menu trượt ra */
+  .sidebar.open {
+    left: 0;
+  }
+
+  .sidebar-overlay {
+    display: block; /* Hiện lớp phủ nếu menu mở */
+  }
+}

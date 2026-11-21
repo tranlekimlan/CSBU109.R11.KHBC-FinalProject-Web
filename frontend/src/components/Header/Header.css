@@ -46,3 +46,39 @@
   background-color: #cbd5e1;
   object-fit: cover;
 }
+
+/* ================= RESPONSIVE HEADER FOR MOBILE ================= */
+@media (max-width: 768px) {
+  .topbar {
+    padding: 0 15px;
+    height: 60px; 
+  }
+
+  .page-title {
+    font-size: 15px; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px; /* Cắt bớt tên trang nếu quá dài */
+  }
+
+  /* Khôi phục lại phần thông tin user */
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .user-name {
+    font-size: 12px; /* Thu nhỏ tên */
+  }
+
+  .user-room {
+    font-size: 10px; /* Thu nhỏ mã số/phòng */
+  }
+
+  .avatar {
+    width: 32px; 
+    height: 32px;
+  }
+}

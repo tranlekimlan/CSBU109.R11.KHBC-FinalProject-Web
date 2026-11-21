@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import Header from '../../../components/Header/Header';
+import imageCompression from 'browser-image-compression';
 import './CreateReport.css';
 
 export default function CreateReport() {
@@ -39,14 +40,42 @@ export default function CreateReport() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleImageSelect = (e) => {
-    const files = Array.from(e.target.files);
-    const newImages = files.map(file => ({
-      file: file,
-      previewUrl: URL.createObjectURL(file)
-    }));
-    setImages(prev => [...prev, ...newImages]);
+const handleImageSelect = async (e) => {
+  const files = Array.from(e.target.files);
+  if (!files || files.length === 0) return;
+
+  const compressedImagesArray = [];
+
+  const options = {
+    maxSizeMB: 1,
+    maxWidthOrHeight: 1920,
+    useWebWorker: true,
   };
+
+  try {
+    for (let i = 0; i < files.length; i++) {
+      const originalFile = files[i];
+      
+      // Bắt đầu nén ảnh
+      const compressedFile = await imageCompression(originalFile, options);
+      
+      // Đóng gói file đã nén kèm theo URL preview để render giao diện
+      compressedImagesArray.push({
+        file: compressedFile, // Gắn file đã nén vào đây
+        previewUrl: URL.createObjectURL(compressedFile)
+      });
+      
+      console.log(`Ảnh ${i + 1} - Gốc: ${(originalFile.size / 1024 / 1024).toFixed(2)} MB -> Đã nén: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB`);
+    }
+
+    // Cập nhật state với mảng ảnh đã được nén
+    setImages(prev => [...prev, ...compressedImagesArray]);
+
+  } catch (error) {
+    console.error('Lỗi khi nén ảnh:', error);
+    setMessage({ type: 'error', text: 'Có lỗi xảy ra khi xử lý hình ảnh.' });
+  }
+};
 
   const removeImage = (indexToRemove) => {
     setImages(prev => prev.filter((_, index) => index !== indexToRemove));
