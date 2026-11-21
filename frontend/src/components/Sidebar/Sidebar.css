@@ -174,28 +174,42 @@
   z-index: 9;
 }
 
-/* Áp dụng khi màn hình nhỏ hơn 768px (Điện thoại/Tablet nhỏ) */
+/* ================= RESPONSIVE SIDEBAR FOR MOBILE ================= */
 @media (max-width: 768px) {
   .mobile-menu-toggle {
-    display: flex; /* Hiện nút bật/tắt */
+    display: flex;
+    /* Đẩy nút bấm lên cao một chút để né thanh Home Bar của iPhone */
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    z-index: 105; /* Nâng z-index lên cao nhất để không bao giờ bị che */
   }
 
   .sidebar {
-    position: fixed; /* Chuyển thành trượt đè lên màn hình */
+    position: fixed; 
     top: 0;
-    left: -260px; /* Giấu ra khỏi mép trái màn hình */
-    height: 100vh;
+    left: -260px; 
+    
+    /* FIX LỖI SAFARI iOS BỊ CHE TRÊN DƯỚI */
+    height: 100dvh; /* Chiều cao động (Dynamic Viewport Height) */
+    max-height: -webkit-fill-available;
+    
+    /* Né tai thỏ (Notch) ở trên và Home Bar ở dưới */
+    padding-top: env(safe-area-inset-top, 10px);
+    padding-bottom: env(safe-area-inset-bottom, 10px);
+    
+    /* Nếu màn hình quá ngắn, cho phép cuộn nội dung bên trong thanh menu */
+    overflow-y: auto;
+    
     transition: left 0.3s ease;
     box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-    z-index: 10;
+    z-index: 100;
   }
 
-  /* Khi được thêm class 'open', menu trượt ra */
   .sidebar.open {
     left: 0;
   }
 
   .sidebar-overlay {
-    display: block; /* Hiện lớp phủ nếu menu mở */
+    display: block; 
+    z-index: 99;
   }
 }

@@ -15,7 +15,7 @@
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.08);
     text-align: center;
-    max-width: 800px;
+    max-width: 900px;
     width: 90%;
 }
 
@@ -30,17 +30,32 @@
     margin-bottom: 40px;
 }
 
+/* ================== MẶC ĐỊNH MÁY TÍNH ================== */
+.role-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+/* Ẩn mũi tên, dấu chấm và chữ "Chạm để chọn" trên máy tính */
+.nav-arrow, .carousel-dots, .click-hint {
+    display: none;
+}
+
 .role-cards {
     display: flex;
     gap: 20px;
     justify-content: center;
     flex-wrap: wrap;
+    width: 100%;
 }
 
+/* Giao diện chung của cả 3 thẻ trên máy tính */
 .role-card {
     flex: 1;
-    min-width: 200px;
-    padding: 30px 20px;
+    min-width: 220px;
+    padding: 40px 20px;
     border: 2px solid #e2e8f0;
     border-radius: 16px;
     cursor: pointer;
@@ -66,17 +81,99 @@
     margin-bottom: 8px;
 }
 
+.role-desc {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+}
+
 .back-btn {
-    margin-top: 30px;
+    margin-top: 10px;
     padding: 10px 20px;
     border: none;
     background: none;
     color: #64748b;
     font-weight: 600;
     cursor: pointer;
-    transition: color 0.3s;
+    transition: 0.3s;
 }
 
 .back-btn:hover {
     color: #0a5c36;
+}
+
+/* ================= RESPONSIVE CHO ĐIỆN THOẠI ================= */
+@media (max-width: 768px) {
+    .role-container {
+        padding: 30px 15px;
+        width: 95%;
+    }
+
+    /* Bật lại 2 nút mũi tên điều hướng */
+    .nav-arrow {
+        display: block;
+        background: none;
+        border: none;
+        font-size: 24px;
+        color: #cbd5e1;
+        cursor: pointer;
+        padding: 10px;
+        transition: all 0.3s;
+    }
+
+    .nav-arrow:hover {
+        color: #0a5c36;
+        transform: scale(1.1);
+    }
+
+    /* Bật lại dấu chấm */
+    .carousel-dots {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 30px;
+    }
+
+    .carousel-dots .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #e2e8f0;
+        transition: 0.3s;
+    }
+
+    .carousel-dots .dot.active {
+        background-color: #0a5c36;
+        width: 24px;
+        border-radius: 5px;
+    }
+
+    /* Bật lại dòng chữ hướng dẫn chạm */
+    .click-hint {
+        display: block;
+        margin-top: 20px;
+        font-size: 12px;
+        color: #0a5c36;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Chỉ hiển thị thẻ đang active, giấu 2 thẻ còn lại */
+    .role-cards {
+        gap: 0;
+    }
+
+    .hidden-card {
+        display: none;
+    }
+
+    .active-card {
+        flex: 1;
+        max-width: 260px;
+        border: 2px solid #0a5c36;
+        background: #f0fdfa;
+        box-shadow: 0 10px 25px rgba(10, 92, 54, 0.15);
+        transform: translateY(0); /* Reset hover effect */
+    }
 }
