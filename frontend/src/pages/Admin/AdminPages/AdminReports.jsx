@@ -63,13 +63,6 @@ export default function AdminReports() {
     categories[t.category] = (categories[t.category] || 0) + 1;
   });
 
-  // Status breakdown
-  const statusBreakdown = {
-    pending: stats.pending,
-    progress: stats.progress,
-    resolved: stats.resolved
-  };
-
   const exportReport = async () => {
     // 1. Khởi tạo một Workbook mới
     const workbook = new ExcelJS.Workbook();
@@ -99,16 +92,14 @@ export default function AdminReports() {
     // 4. Thuật toán tự động tính toán và điều chỉnh độ rộng cho từng cột (AutoFit)
     worksheet.columns.forEach((column) => {
       let maxColumnLength = 0;
-      // Duyệt qua từng ô trong cột để tìm nội dung dài nhất
       column.eachCell({ includeEmpty: true }, (cell) => {
         const cellValue = cell.value ? cell.value.toString() : '';
         maxColumnLength = Math.max(maxColumnLength, cellValue.length);
       });
-      // Đặt độ rộng bằng độ dài lớn nhất tìm được cộng thêm một khoảng đệm nhỏ (ví dụ: 5)
       column.width = maxColumnLength < 10 ? 10 : maxColumnLength + 5;
     });
 
-    // 5. Thêm phần thống kê tóm lược (cách ra 2 dòng cho đẹp)
+    // 5. Thêm phần thống kê tóm lược
     worksheet.addRow([]);
     worksheet.addRow([]);
     
@@ -121,7 +112,7 @@ export default function AdminReports() {
     worksheet.addRow(['Đã xong', stats.resolved]);
     worksheet.addRow(['Tỷ lệ hoàn thành', `${resolveRate}%`]);
 
-    // 6. Xuất và tải file Excel về máy
+    // 6. Xuất file
     try {
       const buffer = await workbook.xlsx.writeBuffer();
       const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
@@ -138,34 +129,41 @@ export default function AdminReports() {
       <main className="main-content">
         <Header title="Thống kê & Báo cáo" />
         <div className="dashboard-body">
-          {/* Filter Section */}
-          <div className="search-filter-section">
-            <div className="form-group" style={{ flex: 1 }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '600' }}>
-                Từ ngày
-              </label>
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                style={{ padding: '10px', border: '1px solid #e2e8f0', borderRadius: '8px', width: '100%' }}
-              />
-            </div>
+          
+          {/* Filter Section - ĐÃ CẬP NHẬT GIAO DIỆN */}
+          <div className="search-filter-section" style={{
+            backgroundColor: '#ffffff',
+            padding: '16px',
+            borderRadius: '12px',
+            border: '1px solid #e2e8f0',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
+          }}>
+            <div className="filter-group" style={{ width: '100%', alignItems: 'flex-end' }}>
+              <div className="form-group" style={{ flex: 1, marginBottom: 0 }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontSize: '13px', fontWeight: '700', color: '#475569' }}>
+                  Từ ngày
+                </label>
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  style={{ width: '100%', padding: '12px 14px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '14px', color: '#1e293b', outline: 'none' }}
+                />
+              </div>
 
-            <div className="form-group" style={{ flex: 1 }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '600' }}>
-                Đến ngày
-              </label>
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                style={{ padding: '10px', border: '1px solid #e2e8f0', borderRadius: '8px', width: '100%' }}
-              />
-            </div>
+              <div className="form-group" style={{ flex: 1, marginBottom: 0 }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontSize: '13px', fontWeight: '700', color: '#475569' }}>
+                  Đến ngày
+                </label>
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  style={{ width: '100%', padding: '12px 14px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '14px', color: '#1e293b', outline: 'none' }}
+                />
+              </div>
 
-            <div style={{ alignSelf: 'flex-end' }}>
-              <button className="btn-export" onClick={exportReport}>
+              <button className="btn-export" onClick={exportReport} style={{ height: '45px', margin: 0 }}>
                 <i className="fa-solid fa-download"></i> Xuất Báo Cáo
               </button>
             </div>
@@ -191,12 +189,12 @@ export default function AdminReports() {
             </div>
           </div>
 
-          {/* Resolution Rate */}
+          {/* Resolution Rate - BỔ SUNG FLEX-WRAP CHO MOBILE */}
           <div className="chart-container">
             <h3>Tỷ lệ hoàn thành</h3>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
-              <div style={{ flex: 1 }}>
-                <div style={{ position: 'relative', width: '200px', height: '200px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '30px', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <div style={{ flex: '1 1 200px', maxWidth: '200px' }}>
+                <div style={{ position: 'relative', width: '200px', height: '200px', margin: '0 auto' }}>
                   <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%', transform: 'rotate(-90deg)' }}>
                     <circle cx="50" cy="50" r="45" fill="none" stroke="#e2e8f0" strokeWidth="8" />
                     <circle
@@ -224,7 +222,7 @@ export default function AdminReports() {
                 </div>
               </div>
 
-              <div style={{ flex: 1 }}>
+              <div style={{ flex: '1 1 200px', textAlign: 'left' }}>
                 <p style={{ marginBottom: '12px' }}>
                   <strong>Tổng sự cố:</strong> {stats.total}
                 </p>
@@ -261,12 +259,12 @@ export default function AdminReports() {
             </table>
           </div>
 
-          {/* Status Breakdown */}
+          {/* Status Breakdown - SỬ DỤNG GRID THÍCH ỨNG (AUTO-FIT) */}
           <div className="chart-container">
             <h3>Phân bố theo trạng thái</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '16px' }}>
               <div style={{
-                padding: '20px',
+                padding: '20px 10px',
                 background: '#eff6ff',
                 borderRadius: '12px',
                 textAlign: 'center',
@@ -279,7 +277,7 @@ export default function AdminReports() {
               </div>
 
               <div style={{
-                padding: '20px',
+                padding: '20px 10px',
                 background: '#fff7ed',
                 borderRadius: '12px',
                 textAlign: 'center',
@@ -292,7 +290,7 @@ export default function AdminReports() {
               </div>
 
               <div style={{
-                padding: '20px',
+                padding: '20px 10px',
                 background: '#f0fdf4',
                 borderRadius: '12px',
                 textAlign: 'center',
@@ -305,6 +303,7 @@ export default function AdminReports() {
               </div>
             </div>
           </div>
+
         </div>
       </main>
     </div>
