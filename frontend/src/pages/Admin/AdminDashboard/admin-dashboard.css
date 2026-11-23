@@ -142,7 +142,7 @@ body {
   font-weight: 800;
 }
 
-/* 3. Tùy chỉnh Bảng cho Admin */
+/* 3. Tùy chỉnh Bảng cho Admin (Đã cách ly CSS) */
 .table-section {
   background-color: #ffffff;
   border-radius: 16px;
@@ -161,6 +161,39 @@ body {
 .table-header h3 {
   font-size: 18px;
   font-weight: 700;
+}
+
+/* Hỗ trợ cuộn ngang bảng trên điện thoại */
+.admin-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px; /* Ép bảng giữ nguyên form, tạo thanh cuộn ngang trên màn nhỏ */
+}
+
+.admin-table th, .admin-table td {
+  padding: 16px 20px;
+  text-align: left;
+}
+
+.admin-table th {
+  background-color: #f8fafc;
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-table td {
+  font-size: 14px;
+  font-weight: 500;
+  border-bottom: 1px solid #f1f5f9;
 }
 
 .view-all {
@@ -576,14 +609,41 @@ td {
     grid-template-columns: 1fr;
   }
 
-  .filter-buttons {
-    flex-direction: column;
+  /* --- BẮT ĐẦU: Ẩn nút PC, Hiện Dropdown Mobile --- */
+  .filter-buttons.desktop-filters {
+    display: none;
   }
 
-  .filter-btn {
-    width: 100%;
+  .mobile-filters {
+    display: block;
   }
 
+  .table-header {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    justify-content: center;
+    text-align: center;
+  }
+
+  .table-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e293b;
+    text-transform: uppercase;
+  }
+
+  .table-section {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+  }
+  /* --- KẾT THÚC: Phần chỉnh sửa Dropdown và Thẻ --- */
+
+  /* --- Các phần Modal và Banner cũ của bạn (Giữ nguyên) --- */
   .sd-row {
     flex-direction: column;
     gap: 0;
@@ -605,5 +665,141 @@ td {
 
   .dashboard-body {
     padding: 20px;
+  }
+}
+
+/* Ẩn bộ lọc điện thoại trên màn hình máy tính */
+.mobile-filters {
+  display: none; 
+}
+
+/* Định dạng cho Dropdown trên điện thoại */
+.filter-dropdown {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+  background-color: #ffffff;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2364748b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px top 50%;
+  background-size: 12px auto;
+}
+
+/* Hiệu ứng màu xanh cyan của Admin khi focus vào dropdown */
+.filter-dropdown:focus {
+  border-color: #0891B2;
+  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1);
+}
+
+/* Ẩn giao diện Mobile Card trên máy tính mặc định */
+.admin-cards-mobile {
+  display: none;
+}
+
+/* KHI XEM TRÊN ĐIỆN THOẠI (Dưới 768px) */
+@media (max-width: 768px) {
+  
+  /* Ẩn bảng Desktop */
+  .admin-table-desktop {
+    display: none !important;
+  }
+  
+  /* Container của Thẻ */
+  .admin-cards-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    background-color: #f8fafc;
+  }
+
+  /* Định dạng Thẻ (Style Worker) */
+  .ticket-worker-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  }
+
+  .worker-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .worker-card-id {
+    font-size: 15px;
+    color: #64748b;
+    font-weight: 600;
+  }
+
+  .worker-card-date {
+    font-size: 14px;
+    color: #64748b;
+  }
+
+  .worker-room-badge {
+    display: inline-block;
+    background-color: #b9effc;
+    color: #0891B2;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+
+  .worker-card-body {
+    margin-bottom: 12px;
+  }
+
+  .worker-card-title {
+    font-size: 16px;
+    color: #1e293b;
+    margin-bottom: 4px;
+  }
+
+  .worker-card-category, 
+  .worker-card-student {
+    font-size: 14px;
+    color: #475569;
+    margin-bottom: 2px;
+  }
+
+  .worker-status-badge {
+    margin-bottom: 16px;
+  }
+
+  /* Đường kẻ đứt phân cách (Style Worker) */
+  .worker-card-divider {
+    border-top: 1px dashed #cbd5e1;
+    margin-bottom: 16px;
+  }
+
+  .btn-worker-action {
+    width: 100%;
+    background-color: #0a5c36;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-align: center;
+  }
+
+  .btn-worker-action:hover {
+    background-color: #084c2d;
   }
 }

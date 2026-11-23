@@ -187,49 +187,92 @@ export default function AllTickets() {
             </div>
           </div>
 
-          {/* Table */}
+          {/* Table & Mobile Cards */}
           <div className="table-section">
             <div className="table-header">
               <h3>Kết quả tìm kiếm: {filtered.length} sự cố</h3>
             </div>
 
             {filtered.length > 0 ? (
-              <table className="data-table">
-                <thead>
-                  <tr>
-                    <th>Mã Vé</th>
-                    <th>Sinh viên</th>
-                    <th>Phòng</th>
-                    <th>Nội dung</th>
-                    <th>Danh mục</th>
-                    <th>Ngày báo</th>
-                    <th>Trạng thái</th>
-                    <th>Chi tiết</th>
-                  </tr>
-                </thead>
-                <tbody>
+              <>
+                {/* 1. GIAO DIỆN BẢNG CHO MÁY TÍNH */}
+                <div className="admin-pages-desktop">
+                  <table className="data-table">
+                    <thead>
+                      <tr>
+                        <th>Mã Vé</th>
+                        <th>Sinh viên</th>
+                        <th>Phòng</th>
+                        <th>Nội dung</th>
+                        <th>Danh mục</th>
+                        <th>Ngày báo</th>
+                        <th>Trạng thái</th>
+                        <th>Chi tiết</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filtered.map((ticket) => (
+                        <tr key={ticket._id}>
+                          <td className="ticket-id">QF-{ticket._id.substring(ticket._id.length - 4).toUpperCase()}</td>
+                          <td>{ticket.studentName || 'N/A'}</td>
+                          <td><span className="room-badge">{ticket.room}</span></td>
+                          <td className="ticket-title">{ticket.title}</td>
+                          <td>{ticket.category}</td>
+                          <td>{formatDate(ticket.createdAt)}</td>
+                          <td>
+                            <span className={`badge ${statusBadge[ticket.status]?.class || 'badge-pending'}`}>
+                              {statusBadge[ticket.status]?.label || 'Không rõ'}
+                            </span>
+                          </td>
+                          <td>
+                            <button className="btn-view-detail" onClick={() => {setSelectedTicket(ticket); setNewStatus('');}}>
+                              Xem
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* 2. GIAO DIỆN THẺ (CARD) CHO ĐIỆN THOẠI */}
+                <div className="admin-pages-mobile">
                   {filtered.map((ticket) => (
-                    <tr key={ticket._id}>
-                      <td className="ticket-id">QF-{ticket._id.substring(ticket._id.length - 4).toUpperCase()}</td>
-                      <td>{ticket.studentName || 'N/A'}</td>
-                      <td><span className="room-badge">{ticket.room}</span></td>
-                      <td className="ticket-title">{ticket.title}</td>
-                      <td>{ticket.category}</td>
-                      <td>{formatDate(ticket.createdAt)}</td>
-                      <td>
+                    <div className="ap-mobile-card" key={ticket._id}>
+                      <div className="ap-card-header">
+                        <span className="ap-card-id">
+                          QF-{ticket._id.substring(ticket._id.length - 4).toUpperCase()}
+                        </span>
+                        <span className="ap-card-date">{formatDate(ticket.createdAt)}</span>
+                      </div>
+
+                      <div className="ap-room-badge">
+                        {ticket.room}
+                      </div>
+
+                      <div className="ap-card-body">
+                        <div className="ap-card-title">{ticket.title}</div>
+                        <div className="ap-card-sub">{ticket.category}</div>
+                        <div className="ap-card-sub">SV: {ticket.studentName || 'N/A'}</div>
+                      </div>
+
+                      <div className="ap-card-status">
                         <span className={`badge ${statusBadge[ticket.status]?.class || 'badge-pending'}`}>
                           {statusBadge[ticket.status]?.label || 'Không rõ'}
                         </span>
-                      </td>
-                      <td>
-                        <button className="btn-view-detail" onClick={() => {setSelectedTicket(ticket); setNewStatus('');}}>
-                          Xem
-                        </button>
-                      </td>
-                    </tr>
+                      </div>
+
+                      <div className="ap-card-divider"></div>
+                      <button 
+                        className="ap-btn-action" 
+                        onClick={() => {setSelectedTicket(ticket); setNewStatus('');}}
+                      >
+                        Xem chi tiết
+                      </button>
+                    </div>
                   ))}
-                </tbody>
-              </table>
+                </div>
+              </>
             ) : (
               <div className="empty-state">
                 {isLoading ? 'Đang tải dữ liệu...' : 'Không tìm thấy sự cố nào.'}

@@ -104,7 +104,6 @@ export default function AdminDashboard() {
     }
 
     try {
-      // Gọi API cập nhật trạng thái thành 'archived'
       const response = await fetch(`${import.meta.env.VITE_API_URL}/tickets/${selectedTicket._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -112,9 +111,8 @@ export default function AdminDashboard() {
       });
 
       if (response.ok) {
-        // Rút vé khỏi mảng tickets hiện tại để nó biến mất khỏi màn hình Admin
         setTickets(tickets.filter(t => t._id !== selectedTicket._id));
-        setSelectedTicket(null); // Đóng popup
+        setSelectedTicket(null); 
         alert('Đã nghiệm thu và lưu trữ vé thành công!');
       } else {
         alert('Có lỗi xảy ra khi lưu trữ vé.');
@@ -154,7 +152,8 @@ export default function AdminDashboard() {
           </div>
 
           <div className="filter-section">
-            <div className="filter-buttons">
+            {/* Giao diện nút bấm cho Máy tính */}
+            <div className="filter-buttons desktop-filters">
               <button
                 className={`filter-btn ${filterStatus === 'all' ? 'active' : ''}`}
                 onClick={() => setFilterStatus('all')}
@@ -180,6 +179,20 @@ export default function AdminDashboard() {
                 Đã xong ({resolvedCount})
               </button>
             </div>
+
+            {/* Giao diện Dropdown cho Điện thoại */}
+            <div className="mobile-filters">
+              <select 
+                className="filter-dropdown"
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+              >
+                <option value="all">Tất cả ({totalCount})</option>
+                <option value="pending">Chờ duyệt ({pendingCount})</option>
+                <option value="progress">Đang xử lý ({progressCount})</option>
+                <option value="resolved">Đã xong ({resolvedCount})</option>
+              </select>
+            </div>
           </div>
 
           <div className="table-section">
@@ -188,42 +201,90 @@ export default function AdminDashboard() {
             </div>
 
             {filteredTickets.length > 0 ? (
-              <table>
-                <thead>
-                  <tr>
-                    <th>Mã Vé</th>
-                    <th>Sinh viên</th>
-                    <th>Phòng</th>
-                    <th>Nội dung</th>
-                    <th>Danh mục</th>
-                    <th>Ngày báo</th>
-                    <th>Trạng thái</th>
-                    <th>Hành động</th>
-                  </tr>
-                </thead>
-                <tbody>
+              <>
+                {/* --- GIAO DIỆN 1: BẢNG CHO MÁY TÍNH (DESKTOP) --- */}
+                <div className="admin-table-desktop">
+                  <table className="admin-table">
+                    <thead>
+                      <tr>
+                        <th>Mã Vé</th>
+                        <th>Sinh viên</th>
+                        <th>Phòng</th>
+                        <th>Nội dung</th>
+                        <th>Danh mục</th>
+                        <th>Ngày báo</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredTickets.map((ticket) => (
+                        <tr key={ticket._id}>
+                          <td>QF-{ticket._id.substring(ticket._id.length - 4).toUpperCase()}</td>
+                          <td>{ticket.studentName || 'N/A'}</td>
+                          <td>{ticket.room}</td>
+                          <td className="ticket-title">{ticket.title}</td>
+                          <td>{ticket.category}</td>
+                          <td>{formatDate(ticket.createdAt)}</td>
+                          <td>
+                            <span className={`badge ${statusBadge[ticket.status]?.class || 'badge-pending'}`}>
+                              {statusBadge[ticket.status]?.label || 'Không rõ'}
+                            </span>
+                          </td>
+                          <td>
+                            <button className="btn-view-detail" onClick={() => {setSelectedTicket(ticket); setNewStatus('');}}>
+                              Xem
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* --- GIAO DIỆN 2: THẺ (CARD) CHO ĐIỆN THOẠI (Đồng bộ Worker) --- */}
+                <div className="admin-cards-mobile">
                   {filteredTickets.map((ticket) => (
-                    <tr key={ticket._id}>
-                      <td>QF-{ticket._id.substring(ticket._id.length - 4).toUpperCase()}</td>
-                      <td>{ticket.studentName || 'N/A'}</td>
-                      <td>{ticket.room}</td>
-                      <td className="ticket-title">{ticket.title}</td>
-                      <td>{ticket.category}</td>
-                      <td>{formatDate(ticket.createdAt)}</td>
-                      <td>
+                    <div className="ticket-worker-card" key={ticket._id}>
+                      {/* Tiêu đề & Ngày */}
+                      <div className="worker-card-header">
+                        <span className="worker-card-id">
+                          QF-{ticket._id.substring(ticket._id.length - 4).toUpperCase()}
+                        </span>
+                        <span className="worker-card-date">{formatDate(ticket.createdAt)}</span>
+                      </div>
+
+                      {/* Room Badge */}
+                      <div className="worker-room-badge">
+                        {ticket.room}
+                      </div>
+
+                      {/* Title & Info */}
+                      <div className="worker-card-body">
+                        <div className="worker-card-title">{ticket.title}</div>
+                        <div className="worker-card-category">{ticket.category}</div>
+                        <div className="worker-card-student">SV: {ticket.studentName || 'N/A'}</div>
+                      </div>
+
+                      {/* Status Badge */}
+                      <div className="worker-status-badge">
                         <span className={`badge ${statusBadge[ticket.status]?.class || 'badge-pending'}`}>
                           {statusBadge[ticket.status]?.label || 'Không rõ'}
                         </span>
-                      </td>
-                      <td>
-                        <button className="btn-view-detail" onClick={() => {setSelectedTicket(ticket); setNewStatus('');}}>
-                          Xem
-                        </button>
-                      </td>
-                    </tr>
+                      </div>
+
+                      {/* Divider & Action */}
+                      <div className="worker-card-divider"></div>
+                      <button 
+                        className="btn-worker-action" 
+                        onClick={() => {setSelectedTicket(ticket); setNewStatus('');}}
+                      >
+                        Xem chi tiết
+                      </button>
+                    </div>
                   ))}
-                </tbody>
-              </table>
+                </div>
+              </>
             ) : (
               <div style={{ padding: '40px', textAlign: 'center', color: '#64748b' }}>
                 {isLoading ? 'Đang tải dữ liệu...' : 'Không có báo cáo nào.'}
@@ -233,10 +294,10 @@ export default function AdminDashboard() {
         </div>
       </main>
 
+      {/* Modal Chi tiết vé giữ nguyên như cũ */}
       {selectedTicket && (
         <div className="sd-modal-overlay" onClick={() => setSelectedTicket(null)}>
           <div className="sd-modal-box" onClick={(e) => e.stopPropagation()}>
-
             <div className="sd-modal-header admin-header">
               <h2>Chi Tiết Báo Cáo</h2>
               <p>Mã vé: QF-{selectedTicket._id.substring(selectedTicket._id.length - 4).toUpperCase()}</p>
@@ -253,7 +314,6 @@ export default function AdminDashboard() {
                   <input type="text" value={selectedTicket.room} readOnly />
                 </div>
               </div>
-
               <div className="sd-row">
                 <div className="sd-group">
                   <label>Tiêu đề</label>
@@ -264,7 +324,6 @@ export default function AdminDashboard() {
                   <input type="text" value={selectedTicket.category} readOnly />
                 </div>
               </div>
-
               <div className="sd-row">
                 <div className="sd-group">
                   <label>Ngày báo cáo</label>
@@ -327,7 +386,6 @@ export default function AdminDashboard() {
               </div>
 
               <div className="sd-actions">
-                {/* Nút Nghiệm thu & Lưu trữ chỉ hiện khi thợ đã báo cáo 'Đã xong' */}
                 {selectedTicket.status === 'resolved' && (
                   <button 
                     className="btn-update-status" 

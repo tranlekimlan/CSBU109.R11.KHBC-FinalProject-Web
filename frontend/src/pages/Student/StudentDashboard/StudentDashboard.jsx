@@ -179,6 +179,7 @@ export default function StudentDashboard() {
                         </span>
                       </td>
                       <td data-label="Thao tác">
+                        <div className="worker-card-divider"></div>
                         <button className="btn-view-detail" onClick={() => openReportDetail(report)}>
                           Xem chi tiết
                         </button>
