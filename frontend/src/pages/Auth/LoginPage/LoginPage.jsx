@@ -41,6 +41,7 @@ function LoginPage() {
   // 1. THÊM STATE ĐIỀU KHIỂN POPUP
   const [popup, setPopup] = useState({ show: false, message: '' });
   const [errorMessage, setErrorMessage] = useState(''); // THÊM DÒNG NÀY
+  const [loginStatus, setLoginStatus] = useState('idle');
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -50,12 +51,12 @@ function LoginPage() {
     }));
   };
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage(''); // Xóa lỗi cũ mỗi lần bấm đăng nhập
+    setErrorMessage(''); 
+    setLoginStatus('loading'); // Bật loading xoay vòng
 
     try {
-      // 1. Gửi data xuống Backend
       const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
         method: 'POST',
         headers: {
@@ -64,33 +65,35 @@ function LoginPage() {
         body: JSON.stringify({
           username: formData.username,
           password: formData.password,
-          role: userRole // Gửi kèm vai trò (student, worker, admin)
+          role: userRole
         }),
       });
 
-      // 2. Nhận kết quả từ Backend
       const data = await response.json();
 
       if (response.ok) {
-        // --- ĐĂNG NHẬP THÀNH CÔNG ---
-        // Lưu thông tin người dùng vào Local Storage để dùng cho các trang Dashboard
         localStorage.setItem('currentUser', JSON.stringify(data.user));
         
-        // Điều hướng đúng theo route của bạn
-        if (userRole === 'admin') {
-          navigate('/admin-dashboard');
-        } else if (userRole === 'worker') {
-          navigate('/worker-dashboard');
-        } else {
-          navigate('/student-dashboard');
-        }
+        setLoginStatus('success'); // Bật dấu tích thành công
+        
+        // Trì hoãn chuyển trang 1.5s để xem hiệu ứng
+        setTimeout(() => {
+          if (userRole === 'admin') {
+            navigate('/admin-dashboard');
+          } else if (userRole === 'worker') {
+            navigate('/worker-dashboard');
+          } else {
+            navigate('/student-dashboard');
+          }
+        }, 1500);
+
       } else {
-        // --- ĐĂNG NHẬP THẤT BẠI ---
-        // Hiển thị lỗi do Backend gửi lên (VD: "Mật khẩu không chính xác!")
+        setLoginStatus('idle'); // Tắt loading
         setErrorMessage(data.message);
       }
     } catch (error) {
       console.error('Lỗi mạng:', error);
+      setLoginStatus('idle'); // Tắt loading
       setErrorMessage('Không thể kết nối đến máy chủ Backend!');
     }
   };
@@ -111,6 +114,27 @@ function LoginPage() {
 
   return (
     <div className="split-layout">
+
+      {/* GIAO DIỆN POPUP LOADING & SUCCESS */}
+      {loginStatus !== 'idle' && (
+        <div className="status-popup-overlay">
+          <div className="status-popup-box">
+            {loginStatus === 'loading' ? (
+              <>
+                <div className="spinner"></div>
+                <h3>Đang đăng nhập...</h3>
+              </>
+            ) : (
+              <>
+                <div className="success-checkmark">
+                  <i className="fa-solid fa-check"></i>
+                </div>
+                <h3>Đăng nhập thành công!</h3>
+              </>
+            )}
+          </div>
+        </div>
+      )}
       
       {/* 3. GIAO DIỆN POPUP BÁO LỖI */}
       {popup.show && (

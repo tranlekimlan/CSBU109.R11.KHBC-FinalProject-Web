@@ -99,9 +99,10 @@ export default function WorkerTasks() {
         <Header title="Việc Được Giao" />
 
         <div className="dashboard-body">
-          {/* Bộ lọc (Đã bỏ margin-top vì không còn Banner) */}
-          <div className="filter-section" style={{ marginTop: '0' }}>
-            <div className="filter-buttons">
+          {/* Bộ lọc */}
+          <div className="filter-section" style={{ marginTop: '0', marginBottom: '24px' }}>
+            {/* Giao diện nút bấm cho Máy tính */}
+            <div className="filter-buttons desktop-filters">
               <button className={`filter-btn ${filterStatus === 'all' ? 'active' : ''}`} onClick={() => setFilterStatus('all')}>
                 Tất cả ({totalCount})
               </button>
@@ -114,6 +115,20 @@ export default function WorkerTasks() {
               <button className={`filter-btn ${filterStatus === 'resolved' ? 'active' : ''}`} onClick={() => setFilterStatus('resolved')}>
                 Đã xong ({resolvedCount})
               </button>
+            </div>
+
+            {/* Giao diện Dropdown cho Điện thoại */}
+            <div className="mobile-filters">
+              <select 
+                className="filter-dropdown"
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+              >
+                <option value="all">Tất cả ({totalCount})</option>
+                <option value="assigned">Chưa bắt đầu ({assignedCount})</option>
+                <option value="progress">Đang sửa ({progressCount})</option>
+                <option value="resolved">Đã xong ({resolvedCount})</option>
+              </select>
             </div>
           </div>
 

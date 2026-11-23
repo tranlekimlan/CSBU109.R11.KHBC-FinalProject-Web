@@ -115,22 +115,40 @@ export default function WorkerNotifications() {
             </div>
 
             {/* Filters */}
-            <div className="filter-buttons">
-              {[
-                { key: 'all',       label: 'Tất cả' },
-                { key: 'unread',    label: 'Chưa đọc' },
-                { key: 'new_task',  label: 'Việc mới giao' },
-                { key: 'rating',    label: 'Đánh giá nhận được' },
-                { key: 'completed', label: 'Đã hoàn thành' },
-              ].map(f => (
-                <button
-                  key={f.key}
-                  className={`filter-btn ${filter === f.key ? 'active' : ''}`}
-                  onClick={() => setFilter(f.key)}
+            <div className="filter-section" style={{ marginBottom: '24px' }}>
+              {/* Giao diện nút bấm cho Máy tính */}
+              <div className="filter-buttons desktop-filters">
+                {[
+                  { key: 'all',       label: 'Tất cả' },
+                  { key: 'unread',    label: 'Chưa đọc' },
+                  { key: 'new_task',  label: 'Việc mới giao' },
+                  { key: 'rating',    label: 'Đánh giá nhận được' },
+                  { key: 'completed', label: 'Đã hoàn thành' },
+                ].map(f => (
+                  <button
+                    key={f.key}
+                    className={`filter-btn ${filter === f.key ? 'active' : ''}`}
+                    onClick={() => setFilter(f.key)}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Giao diện Dropdown cho Điện thoại */}
+              <div className="mobile-filters">
+                <select 
+                  className="filter-dropdown"
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
                 >
-                  {f.label}
-                </button>
-              ))}
+                  <option value="all">Tất cả</option>
+                  <option value="unread">Chưa đọc</option>
+                  <option value="new_task">Việc mới giao</option>
+                  <option value="rating">Đánh giá nhận được</option>
+                  <option value="completed">Đã hoàn thành</option>
+                </select>
+              </div>
             </div>
 
             {/* List */}

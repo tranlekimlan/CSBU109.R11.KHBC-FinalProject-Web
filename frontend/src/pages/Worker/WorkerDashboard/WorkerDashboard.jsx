@@ -124,9 +124,6 @@ export default function WorkerDashboard() {
               <h2>Xin chào, Kỹ thuật viên {currentUser?.fullName}! 👷‍♂️</h2>
               <p>Bạn đang có {assignedCount + progressCount} công việc cần xử lý. Chúc một ngày làm việc hiệu quả.</p>
             </div>
-            <button className="btn-scan-qr" onClick={() => alert('Chức năng quét mã QR phòng sẽ ra mắt sau!')}>
-              <i className="fa-solid fa-qrcode"></i> Quét QR Nhận Việc
-            </button>
           </div>
 
           {/* Grid Thống kê */}
@@ -146,7 +143,9 @@ export default function WorkerDashboard() {
 
           {/* Bộ lọc */}
           <div className="filter-section">
-            <div className="filter-buttons">
+            
+            {/* Giao diện nút bấm cho Máy tính */}
+            <div className="filter-buttons desktop-filters">
               <button className={`filter-btn ${filterStatus === 'all' ? 'active' : ''}`} onClick={() => setFilterStatus('all')}>
                 Tất cả ({totalCount})
               </button>
@@ -160,6 +159,21 @@ export default function WorkerDashboard() {
                 Đã xong ({resolvedCount})
               </button>
             </div>
+
+            {/* Giao diện Dropdown cho Điện thoại */}
+            <div className="mobile-filters">
+              <select 
+                className="filter-dropdown"
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+              >
+                <option value="all">Tất cả ({totalCount})</option>
+                <option value="assigned">Chưa bắt đầu ({assignedCount})</option>
+                <option value="progress">Đang sửa ({progressCount})</option>
+                <option value="resolved">Đã xong ({resolvedCount})</option>
+              </select>
+            </div>
+
           </div>
 
           {/* Bảng Danh sách Công việc */}
