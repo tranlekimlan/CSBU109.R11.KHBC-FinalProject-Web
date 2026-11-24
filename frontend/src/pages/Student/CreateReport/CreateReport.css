@@ -143,6 +143,35 @@
   background-color: #f0fdf4;
 }
 
+.cr-loading-box {
+  width: 120px;
+  height: 120px;
+  border: 2px dashed #0a5c36;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0fdf4;
+  color: #0a5c36;
+}
+
+.cr-loading-box i {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.cr-loading-box span {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.cr-upload-box.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 /* DẤU CỘNG TO NẰM GIỮA */
 .cr-plus-icon {
   font-size: 44px !important; /* Phóng to dấu cộng */

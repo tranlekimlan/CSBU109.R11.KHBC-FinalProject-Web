@@ -20,6 +20,7 @@ export default function CreateReport() {
   });
 
   const [images, setImages] = useState([]);
+  const [isCompressing, setIsCompressing] = useState(false);
   
   // STATE MỚI: Dùng để lưu ảnh đang được phóng to
   const [selectedPreview, setSelectedPreview] = useState(null);
@@ -40,42 +41,46 @@ export default function CreateReport() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-const handleImageSelect = async (e) => {
-  const files = Array.from(e.target.files);
-  if (!files || files.length === 0) return;
+  const handleImageSelect = async (e) => {
+    const files = Array.from(e.target.files);
+    if (!files || files.length === 0) return;
 
-  const compressedImagesArray = [];
+    setIsCompressing(true); // Bật hiệu ứng xoay
+    const compressedImagesArray = [];
 
-  const options = {
-    maxSizeMB: 1,
-    maxWidthOrHeight: 1920,
-    useWebWorker: true,
-  };
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
 
-  try {
-    for (let i = 0; i < files.length; i++) {
-      const originalFile = files[i];
-      
-      // Bắt đầu nén ảnh
-      const compressedFile = await imageCompression(originalFile, options);
-      
-      // Đóng gói file đã nén kèm theo URL preview để render giao diện
-      compressedImagesArray.push({
-        file: compressedFile, // Gắn file đã nén vào đây
-        previewUrl: URL.createObjectURL(compressedFile)
-      });
-      
-      console.log(`Ảnh ${i + 1} - Gốc: ${(originalFile.size / 1024 / 1024).toFixed(2)} MB -> Đã nén: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB`);
+    try {
+      for (let i = 0; i < files.length; i++) {
+        const originalFile = files[i];
+        
+        // Bắt đầu nén ảnh
+        const compressedFile = await imageCompression(originalFile, options);
+        
+        // Đóng gói file đã nén kèm theo URL preview
+        compressedImagesArray.push({
+          file: compressedFile,
+          previewUrl: URL.createObjectURL(compressedFile)
+        });
+        
+        console.log(`Ảnh ${i + 1} - Gốc: ${(originalFile.size / 1024 / 1024).toFixed(2)} MB -> Đã nén: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB`);
+      }
+
+      // Cập nhật state với mảng ảnh đã được nén
+      setImages(prev => [...prev, ...compressedImagesArray]);
+
+    } catch (error) {
+      console.error('Lỗi khi nén ảnh:', error);
+      setMessage({ type: 'error', text: 'Có lỗi xảy ra khi xử lý hình ảnh.' });
+    } finally {
+      setIsCompressing(false); // Tắt hiệu ứng xoay
+      e.target.value = ''; // Reset input để có thể chọn lại cùng 1 ảnh nếu lỡ xóa
     }
-
-    // Cập nhật state với mảng ảnh đã được nén
-    setImages(prev => [...prev, ...compressedImagesArray]);
-
-  } catch (error) {
-    console.error('Lỗi khi nén ảnh:', error);
-    setMessage({ type: 'error', text: 'Có lỗi xảy ra khi xử lý hình ảnh.' });
-  }
-};
+  };
 
   const removeImage = (indexToRemove) => {
     setImages(prev => prev.filter((_, index) => index !== indexToRemove));
@@ -208,9 +213,7 @@ const handleImageSelect = async (e) => {
               <div className="cr-group">
                 <label>Hình ảnh đính kèm (Tùy chọn)</label>
                 <div className="cr-image-grid">
-                  
                   {images.map((img, index) => (
-                    // THÊM SỰ KIỆN CLICK ĐỂ PHÓNG TO ẢNH
                     <div 
                       key={index} 
                       className="cr-image-preview" 
@@ -221,7 +224,6 @@ const handleImageSelect = async (e) => {
                       <button 
                         type="button" 
                         className="cr-remove-btn" 
-                        // e.stopPropagation() GIÚP CHẶN SỰ KIỆN CLICK LAN XUỐNG ẢNH ĐỂ KHÔNG BỊ PHÓNG TO KHI BẤM XÓA
                         onClick={(e) => { e.stopPropagation(); removeImage(index); }}
                         title="Xóa ảnh này"
                         style={{ fontWeight: 'bold' }}
@@ -231,18 +233,27 @@ const handleImageSelect = async (e) => {
                     </div>
                   ))}
 
-                  <label className="cr-upload-box">
+                  {/* HIỂN THỊ KHUNG LOADING KHI ĐANG NÉN */}
+                  {isCompressing && (
+                    <div className="cr-loading-box">
+                      <i className="fa-solid fa-spinner fa-spin"></i>
+                      <span>Đang xử lý...</span>
+                    </div>
+                  )}
+
+                  {/* KHÓA NÚT THÊM ẢNH KHI ĐANG NÉN */}
+                  <label className={`cr-upload-box ${isCompressing ? 'disabled' : ''}`}>
                     <input
                       type="file"
                       multiple
                       accept="image/png, image/jpeg, image/jpg"
                       onChange={handleImageSelect}
+                      disabled={isCompressing}
                       style={{ display: 'none' }}
                     />
                     <div className="cr-plus-icon">+</div>
                     <span>Thêm ảnh</span>
                   </label>
-
                 </div>
                 <small style={{ marginTop: '12px' }}>Hỗ trợ JPG, PNG. Có thể chọn nhiều ảnh để kỹ thuật viên đánh giá chính xác hơn.</small>
               </div>
