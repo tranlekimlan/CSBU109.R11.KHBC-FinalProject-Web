@@ -4,9 +4,14 @@ dns.setServers(['8.8.8.8', '8.8.4.4']);
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const connectDB = require('./config/db'); 
+const path = require('path');
+const connectDB = require('./config/db');
 
-// Gọi file routes bạn vừa tạo
+// Swagger UI
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
+
+// Gọi file routes
 const authRoutes = require('./routes/authRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
 const workerRoutes = require('./routes/workerRoutes');
@@ -16,7 +21,10 @@ const app = express();
 connectDB();
 
 app.use(cors());
-app.use(express.json()); 
+app.use(express.json());
+
+// Giao diện tài liệu API Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Cắm đường link API vào server
 app.use('/api/auth', authRoutes);
@@ -25,13 +33,13 @@ app.use('/api/workers', workerRoutes);
 app.use('/api/notifications', notificationRoutes);
 
 app.get('/', (req, res) => {
-  res.send('Backend is connected to QFix');
+  res.send('Backend is connected to QFix. Xem tài liệu API tại /api-docs');
 });
 
-const path = require('path');
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server QFix đang chạy tại cổng http://localhost:${PORT}`);
+  console.log(`Tài liệu Swagger UI: http://localhost:${PORT}/api-docs`);
 });
