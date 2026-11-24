@@ -58,16 +58,19 @@ export default function CreateReport() {
       for (let i = 0; i < files.length; i++) {
         const originalFile = files[i];
         
-        // Bắt đầu nén ảnh
-        const compressedFile = await imageCompression(originalFile, options);
+        // Nén ảnh (kết quả là Blob)
+        const compressedBlob = await imageCompression(originalFile, options);
         
-        // Đóng gói file đã nén kèm theo URL preview
+        // Ép kiểu Blob thành File chuẩn để Multer/Cloudinary nhận diện
+        const compressedFile = new File([compressedBlob], originalFile.name, {
+          type: compressedBlob.type || originalFile.type,
+          lastModified: Date.now(),
+        });
+        
         compressedImagesArray.push({
           file: compressedFile,
           previewUrl: URL.createObjectURL(compressedFile)
         });
-        
-        console.log(`Ảnh ${i + 1} - Gốc: ${(originalFile.size / 1024 / 1024).toFixed(2)} MB -> Đã nén: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB`);
       }
 
       // Cập nhật state với mảng ảnh đã được nén
@@ -102,9 +105,8 @@ export default function CreateReport() {
       // KIỂM TRA CHẶC CHẼ TRƯỚC KHI GẮN ẢNH VÀO FORM
       if (images && images.length > 0) {
         images.forEach(img => {
-          // Bắt buộc img.file phải là đối tượng File thực sự
-          if (img.file instanceof File) {
-            submitData.append('images', img.file); 
+          if (img?.file instanceof Blob) {
+            submitData.append('images', img.file, img.file.name || 'report-image.jpg'); 
           }
         });
       }
@@ -271,7 +273,7 @@ export default function CreateReport() {
               </div>
 
               <div className="cr-actions">
-                <button type="submit" className="cr-btn-submit" disabled={isSubmitting}>
+                <button type="submit" className="cr-btn-submit" disabled={isSubmitting || isCompressing}>
                   {isSubmitting ? (
                     <><i className="fa-solid fa-spinner fa-spin"></i> Đang gửi...</>
                   ) : (
